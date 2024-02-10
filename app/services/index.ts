@@ -76,6 +76,9 @@ const routes = {
   establishment: 'Establishment',
   establishmentByType: 'Establishment/byType/{cityId}',
   establishmentByCity: 'Establishment/byCity/{cityId}',
+  establishmentTypes: 'Establishment/types',
+  establishmentVolonteer: 'Establishment/volonteer',
+  byTypeByCity : 'byType/{typeId}/byCity/{cityId}',
   socPayout: 'api/SocialPayout',
   socPayoutId: 'api/SocialPayout/{id}',
   stepId: '/Step/{id}',
@@ -87,8 +90,8 @@ const routes = {
   userCategory: 'UserCategory',
   volunteerId: 'Volunteer/{id}',
   volunteer: 'Volunteer',
-  establishmentVolunteer: 'Establishment/Volunteer',
-  getPayments: 'api/SocialPayout',
+  eventId: 'Event/{id}',
+  event: 'Event',
 };
 
 export {routes, executeRequest};

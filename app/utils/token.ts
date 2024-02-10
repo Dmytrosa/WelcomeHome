@@ -2,11 +2,7 @@ import {getSecureValue, setSecureValue} from './keyChain';
 import {login} from '../services/index';
 import {updateToken} from '../store/userSlice';
 import {store} from '../store/store';
-/**
- * Request ACCESS TOKEN using REFRESH TOKEN
- * - ONLY request if there is refresh token present
- * - Accessing store directly since useDispatch doesn't work outside react component
- */
+
 export const requestNewToken = async () => {
   // 1. Get refresh token from keychain
   getSecureValue('refresh_token')

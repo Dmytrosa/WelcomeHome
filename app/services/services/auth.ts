@@ -1,7 +1,4 @@
-import { useDispatch } from 'react-redux';
 import {routes, executeRequest} from '../index';
-import { updateUser } from '../../store/userSlice';
-import { setSecureValue } from '../../utils/keyChain';
 
 export const login = async (body: any) => {
   const response =  await executeRequest( 'POST' , `${routes.login}`, {body});
@@ -39,3 +36,12 @@ export const registerVolonteer = async (body: any) => {
   }
   return sumresp
 };
+
+
+
+export const logout = async (body: any) => {
+  const response = await executeRequest( 'DELETE' ,`${routes.logout}`, {body})
+  if (response.status == 200) return true  
+};
+
+
