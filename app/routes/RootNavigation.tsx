@@ -2,7 +2,11 @@ import React, {useEffect} from 'react';
 import {StatusBar, StyleSheet, ColorValue, View, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 9;
-import {Link, NavigationContainer, getFocusedRouteNameFromRoute} from '@react-navigation/native';
+import {
+  Link,
+  NavigationContainer,
+  getFocusedRouteNameFromRoute,
+} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -67,7 +71,7 @@ function CentersStack() {
       <Stack.Screen
         name="Centers"
         component={Centers}
-        initialParams={ user }
+        initialParams={user}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
@@ -87,10 +91,8 @@ function WorkStack() {
 }
 
 function AuthTEST() {
-
   return (
     <Stack.Navigator>
-
       <Stack.Screen
         name="ChooseRole"
         component={ChooseRole}
@@ -101,8 +103,7 @@ function AuthTEST() {
       <Stack.Screen
         name="LogIn"
         component={Login}
-        options={{headerShown: false,
-        }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="UserReg"
@@ -120,7 +121,7 @@ function AuthTEST() {
         component={FlashScreen}
         options={{
           headerShown: false,
-      }}
+        }}
       />
     </Stack.Navigator>
   );
@@ -130,7 +131,6 @@ function PaymentsStack() {
   const user = useSelector((state: RootState) => state.user);
 
   return (
-
     <Stack.Navigator>
       <Stack.Screen
         name="Payments"
@@ -172,13 +172,13 @@ function TellScreen() {
 
 function AccountStack() {
   const user = useSelector((state: RootState) => state.user);
-// console.log("here",user)
+  // console.log("here",user)
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="Account"
         component={Account}
-        initialParams={ user }
+        initialParams={user}
         options={{
           headerShown: false,
         }}
@@ -197,7 +197,7 @@ export default function RootNavigation() {
   const dispatch = useDispatch();
   // eslint-disable-next-line no-unused-vars
   const user = useSelector((state: RootState) => state.user);
-console.log("user",user)
+  console.log('user', user);
   // Copy existing token from local storage to redux store
   useEffect(() => {
     async function checkIsLogined() {
@@ -229,22 +229,7 @@ console.log("user",user)
             tabBarActiveTintColor: theme.accent,
             headerStyle: {backgroundColor: theme.cardBg, height: 50},
             headerTitleStyle: {color: theme.color, fontSize: 16},
-          }}
-          >
-            <Tab.Screen
-  name="AuthTEST"
-  component={AuthTEST}
-  options={{
-    tabBarStyle: { display: 'none' },
-    // tabBarIcon: () => null,
-    // tabBarIcon: paymentsIcon,
-    headerShown: false,
-    tabBarLabel: '',
-    tabBarVisible: false,
-
-  }}
-/>
-
+          }}>
           <Tab.Screen
             name="Payments"
             component={PaymentsStack}
@@ -252,6 +237,18 @@ console.log("user",user)
               tabBarIcon: paymentsIcon,
               headerShown: false,
               tabBarLabel: '',
+            }}
+          />
+          <Tab.Screen
+            name="AuthTEST"
+            component={AuthTEST}
+            options={{
+              tabBarStyle: {display: 'none'},
+              // tabBarIcon: () => null,
+              // tabBarIcon: paymentsIcon,
+              headerShown: false,
+              tabBarLabel: '',
+              tabBarVisible: false,
             }}
           />
 
@@ -293,7 +290,6 @@ console.log("user",user)
               tabBarLabel: '',
             }}
           />
-         
         </Tab.Navigator>
         {/* ),<></>} */}
       </NavigationContainer>

@@ -81,6 +81,7 @@ const Login = () => {
           setSecureValue('token', accessToken);
           console.log("response",response)
           navigation.navigate('FlashScreen', {name: userName});
+          debugger
     }
     fetchData();
 
