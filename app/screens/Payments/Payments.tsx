@@ -5,10 +5,11 @@ import {useTheme} from '../../theme/useTheme';
 import Payment from './Payment';
 import SocialPaymentForm from './PaymentCreate/PaymentCreateForm'; 
 import { useNavigation } from '@react-navigation/native';
-import { Path, Svg } from 'react-native-svg';
+import { LinearGradient, Path, Svg } from 'react-native-svg';
 import axios from 'axios';
 import { getPayments } from '../../services/services/payment';
 import { RootState } from '../../store/store';
+import Card from '../../components/Card';
 
 
 type payments = {
@@ -35,6 +36,8 @@ const SvgAdd = () => {
 
 
 const Payments = (props) => {
+
+  const {theme} = useTheme();
 
   let payments = []
 
@@ -67,9 +70,23 @@ const Payments = (props) => {
 
   return (
     <ScrollView style={styles.mainContainer}>
-      <View style={styles.autoLayerColumn}>
+     <View style={styles.autoLayerColumn}>
         <Text style={styles.socialPayments}>Соціальні виплати</Text>
         <View style = {styles.underTitle}>
+        <Card>
+        <View >
+          <View >
+            <TextInput
+              ref={inputRef}
+              placeholder="Знайти підтримку"
+              placeholderTextColor={theme?.color}
+  
+              onChangeText={t => setText(t)}
+            />
+          </View>
+        </View>
+      </Card>
+
         <View style={styles.category}>
           <View style={styles.autoLayerRow1}>
             <View style={styles.arrowLeft}>
@@ -90,7 +107,7 @@ const Payments = (props) => {
 
 
         </View>
-        <View style={styles.rectangle}>
+        {/* <View style={styles.rectangle}>
           {payments.map((item)=>(
   <Payment
   key={item.id}
@@ -99,20 +116,8 @@ const Payments = (props) => {
   payment={item.amount}
   id={item.id}/>
           ))}
-          {/* <Payment
-            role ={data.role}
-            text={'Програма мікрофінансування бізнесу ветеранів та членів їхніх родин'}
-            linkTo={'PaymentStruct'}
-            payment={'122K'}
-            titlein='Хто має право на отримання одноразової грошової допомоги (ОГД) у разі загибелі (смерті) військовослужбовців?• батьки;• один із подружжя, який не одружився вдруге;• діти, які не досягли повноліття;• утриманці загиблого (померлого).Важливо! Особам, які мають право на одноразову грошову допомогу, виплата їхньої частки здійснюється незалежно від реалізації такого права іншими особами. Також, відповідно до редакції статті 16-1 Закону України «Про соціальний та правовий захист військовослужбовців та членів їх сімей», що діяла до 25 серпня 2022 року, право на призначення та отримання одноразової грошової допомоги мали члени сім’ї, батьки та утриманці загиблого (померлого) військовослужбовця. Відповідно до статті 3 Сімейного кодексу України сім’ю складають особи, які спільно проживають, пов’язані спільним побутом, мають взаємні права та обов`язки.'/>
-          <Payment
-            role ={data.role}
-            text={'Програма мікрофінансування бізнесу ветеранів та членів їхніх родин'}
-            linkTo={'PaymentStruct'}
-            payment={'122'}
-            titlein='aboba'
-          /> */}
-        </View>
+         
+        </View> */}
       </View>
     </ScrollView>
   );
@@ -123,7 +128,7 @@ export default Payments;
 const styles = StyleSheet.create({
   mainContainer: {
     overflow: 'hidden',
-    backgroundColor: "white",
+    backgroundColor: "#DEFEFA",
     height: "100%"
   },
   autoLayerRow: {

@@ -55,7 +55,7 @@ const themes: themesType = {
     layoutBg: '#f0f0f0',
     cardBg: '#ffffff',
     accent: '#0071ff',
-    error: '#B00020',
+    error: '#B00020'
   },
   dark: {
     name: 'dark',
