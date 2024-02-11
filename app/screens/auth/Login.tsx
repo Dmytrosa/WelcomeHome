@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
+  ImageBackground,
 } from 'react-native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -67,21 +68,20 @@ const Login = () => {
 
   const handleLogin = (values: ValuesType, {setErrors}: any) => {
     async function fetchData() {
-      
       const transformedObject = {
         email: values.email,
         password: values.password,
       };
 
-      const response :any  = await login(transformedObject)
-      console.log("response : ", response )
-      
-        const {accessToken, role, userId, userName, email} = response;
-          dispatch(updateUser({accessToken, role, userId, userName, email}));
-          setSecureValue('token', accessToken);
-          console.log("response",response)
-          navigation.navigate('FlashScreen', {name: userName});
-          debugger
+      const response: any = await login(transformedObject);
+      console.log('response : ', response);
+
+      const {accessToken, role, userId, userName, email} = response;
+      dispatch(updateUser({accessToken, role, userId, userName, email}));
+      setSecureValue('token', accessToken);
+      console.log('response', response);
+      navigation.navigate('FlashScreen', {name: userName});
+      debugger;
     }
     fetchData();
 
@@ -113,15 +113,18 @@ const Login = () => {
 
   return (
     <Layout>
-      <ScrollView contentContainerStyle={styles.scrollview}>
-        <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <ImageBackground
+          source={require('../../../assets/bgr_darkBlue_blue.png')}
+          resizeMode="cover"
+          style={styles.backgroundContainer}>
           <TouchableOpacity onPress={goBack}>
             <View style={styles.backButton}>
               <SVG />
             </View>
           </TouchableOpacity>
           <Text style={styles.heading}>Введіть інформацію для входу</Text>
-          <Card style={styles.formWrapper}>
+          <View>
             <Formik
               initialValues={initialValues}
               validationSchema={LoginSchema}
@@ -145,47 +148,49 @@ const Login = () => {
                       onChangeText={handleChange('email')}
                     />
                   </View> */}
-
-                  <Text style={styles.smallLabel}>Електронна пошта</Text>
-                  <Input
-                    testID="Login.Email"
-                    style={styles.input}
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    value={values.email}
-                    keyboardType="email-address"
-                    placeholder="Email"
-                    error={errors.email && touched.email ? errors.email : ''}
-                  />
-
-                  <Text style={styles.smallLabel}>Пароль</Text>
-                  <Input
-                    style={styles.input}
-                    testID="Login.Password"
-                    placeholder="Password"
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
-                    secureTextEntry
-                    error={
-                      errors.password && touched.password ? errors.password : ''
-                    }
-                  />
+                  <View style={styles.centered}>
+                    <Text style={styles.smallLabel}>Електронна пошта</Text>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="+38"
+                      onChangeText={handleChange('phoneNumber')}
+                      onBlur={handleBlur('phoneNumber')}
+                      value={values.email}
+                    />
+                    {errors.email && touched.email && (
+                      <Text style={styles.errorText}>{errors.email}</Text>
+                    )}
+                  </View>
+                  <View style={styles.centered}>
+                    <Text style={styles.smallLabel}>Пароль</Text>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="+38"
+                      onChangeText={handleChange('phoneNumber')}
+                      onBlur={handleBlur('phoneNumber')}
+                      value={values.password}
+                    />
+                    {errors.password && touched.password && (
+                      <Text style={styles.errorText}>{errors.password}</Text>
+                    )}
+                  </View>
                   {/* <Button
                     title="Login"
                     onPress={handleSubmit}
                     testID="Login.Button"
                   /> */}
-                  <View testID="Login.Button" style={styles.submit}>
-                    <TouchableOpacity onPress={handleSubmit}>
+                  <View testID="Login.Button" style={styles.centered}>
+                    <TouchableOpacity
+                      onPress={handleSubmit}
+                      style={styles.submit}>
                       <Text style={styles.buttonText}>Увійти</Text>
                     </TouchableOpacity>
                   </View>
                 </>
               )}
             </Formik>
-          </Card>
-        </View>
+          </View>
+        </ImageBackground>
       </ScrollView>
     </Layout>
   );
@@ -194,12 +199,18 @@ const Login = () => {
 export default Login;
 
 const styles = StyleSheet.create({
-  container: {
+  scrollViewContainer: {
+    flexGrow: 1,
+  },
+  backgroundContainer: {
+    padding: 20,
     flex: 1,
     flexGrow: 1,
-    padding: 20,
-    backgroundColor: '#E5EFFB',
-    minHeight: 790,
+  },
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   backButton: {
     left: -5,
@@ -216,35 +227,36 @@ const styles = StyleSheet.create({
   },
   heading: {
     color: 'black',
-    fontSize: 20,
-    fontWeight: '700',
+    fontSize: 23,
+    fontWeight: '800',
     wordWrap: 'break-word',
     textAlign: 'center',
     marginBottom: 30,
     marginTop: 50,
   },
   smallLabel: {
-    color: '#878787',
-    fontSize: 14,
+    width: '92%',
+    color: '#130F26',
+    fontSize: 15,
     fontStyle: 'normal',
     fontWeight: '600',
     lineHeight: 27,
+    marginLeft: 18,
     marginBottom: 0,
   },
   formWrapper: {
     backgroundColor: '#E5EFFB',
   },
   submit: {
-    top: 30,
-    left: 'auto',
-    width: 'auto',
-    height: 50,
+    top: 50,
+    width: '80%',
+    height: 54,
     flexShrink: 0,
-    backgroundColor: '#8EB0D2',
+    backgroundColor: '#01161E',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    borderRadius: 14,
+    borderRadius: 30,
   },
   add: {
     width: 41,
@@ -262,23 +274,23 @@ const styles = StyleSheet.create({
     boxShadow: '0px 4px 15px 0px rgba(0, 0, 0, 0.10)',
   },
   buttonText: {
-    fontSize: 17,
+    fontSize: 21,
     textAlign: 'center',
     fontWeight: '600',
     color: '#ffffff',
   },
   input: {
-    width: '100%',
+    elevation: 5,
+    shadowColor: 'gray',
+    width: '95%',
     height: 41,
     flexShrink: 0,
     borderColor: 'white',
     borderWidth: 1,
-    marginBottom: 5,
-    paddingLeft: 10,
-    borderRadius: 10,
+    marginBottom: 20,
+    paddingLeft: 15,
+    borderRadius: 20,
     backgroundColor: 'white',
-    // boxShadow: '0px 4px 15px 0px rgba(0, 0, 0, 0.10)',
-    // display: 'inline'
   },
   linkText: {
     color: '#130F26',
@@ -314,5 +326,10 @@ const styles = StyleSheet.create({
     marginTop: 0,
     width: '100%',
     justifyContent: 'space-between',
+  },
+  errorText: {
+    color: 'red',
+    marginTop: -13,
+    marginBottom: 7,
   },
 });

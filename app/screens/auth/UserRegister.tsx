@@ -6,8 +6,10 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
+  ImageBackground,
 } from 'react-native';
 import {Formik} from 'formik';
+
 import * as Yup from 'yup';
 import {transformToFormikErrors} from '../../utils/form';
 import {Path, Svg} from 'react-native-svg';
@@ -45,15 +47,15 @@ const UserRegister = () => {
       password: password,
     };
 
-    const func = async ()=>{
-      const response :any  = await register(addUser)
-      console.log("response : ", response )
-        const {accessToken, role, userId, userName, email} = response;
-          dispatch(updateUser({accessToken, role, userId, userName, email}));
-          setSecureValue('token', accessToken);
-          navigation.navigate('FlashScreen', {name: userName});
-    }
-    func()
+    const func = async () => {
+      const response: any = await register(addUser);
+      console.log('response : ', response);
+      const {accessToken, role, userId, userName, email} = response;
+      dispatch(updateUser({accessToken, role, userId, userName, email}));
+      setSecureValue('token', accessToken);
+      navigation.navigate('FlashScreen', {name: userName});
+    };
+    func();
   };
   const SVG = () => {
     return (
@@ -75,13 +77,16 @@ const UserRegister = () => {
     navigator.goBack();
   };
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.backButton}>
-        <TouchableOpacity onPress={goBack}>
-          <SVG />
-        </TouchableOpacity>
-      </View>
-      <View>
+    <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+      <ImageBackground
+        source={require('../../../assets/bgr_darkBlue_blue.png')}
+        resizeMode="cover"
+        style={styles.backgroundContainer}>
+        <View style={styles.backButton}>
+          <TouchableOpacity onPress={goBack}>
+            <SVG />
+          </TouchableOpacity>
+        </View>
         <Formik
           initialValues={{
             fullName: '',
@@ -100,10 +105,10 @@ const UserRegister = () => {
             errors,
             touched,
           }) => (
-            <View style={{height: 700}}>
+            <>
               <Text style={styles.heading}>Заповніть основну інформацію</Text>
-              <View>
-                <Text style={styles.smallLabel}>Повне ім'я </Text>
+              <View style={styles.centered}>
+                <Text style={styles.smallLabel}>Повне ім'я (ПІБ)</Text>
                 <TextInput
                   style={styles.input}
                   placeholder="ПІБ"
@@ -112,11 +117,11 @@ const UserRegister = () => {
                   value={values.fullName}
                 />
                 {errors.fullName && touched.fullName && (
-                  <Text>{errors.fullName}</Text>
+                  <Text style={styles.errorText}>{errors.fullName}</Text>
                 )}
               </View>
 
-              <View>
+              <View style={styles.centered}>
                 <Text style={styles.smallLabel}>Номер телефону</Text>
                 <TextInput
                   style={styles.input}
@@ -126,10 +131,10 @@ const UserRegister = () => {
                   value={values.phoneNumber}
                 />
                 {errors.phoneNumber && touched.phoneNumber && (
-                  <Text>{errors.phoneNumber}</Text>
+                  <Text style={styles.errorText}>{errors.phoneNumber}</Text>
                 )}
               </View>
-              <View>
+              <View style={styles.centered}>
                 <Text style={styles.smallLabel}>Електронна пошта</Text>
                 <TextInput
                   style={styles.input}
@@ -138,10 +143,12 @@ const UserRegister = () => {
                   onBlur={handleBlur('email')}
                   value={values.email}
                 />
-                {errors.email && touched.email && <Text>{errors.email}</Text>}
+                {errors.email && touched.email && (
+                  <Text style={styles.errorText}>{errors.email}</Text>
+                )}
               </View>
 
-              <View>
+              <View style={styles.centered}>
                 <Text style={styles.smallLabel}>Пароль</Text>
                 <TextInput
                   style={styles.input}
@@ -152,11 +159,11 @@ const UserRegister = () => {
                   secureTextEntry
                 />
                 {errors.password && touched.password && (
-                  <Text>{errors.password}</Text>
+                  <Text style={styles.errorText}>{errors.password}</Text>
                 )}
               </View>
 
-              <View>
+              <View style={styles.centered}>
                 <Text style={styles.smallLabel}>Підтвердіть пароль</Text>
                 <TextInput
                   style={styles.input}
@@ -167,62 +174,71 @@ const UserRegister = () => {
                   secureTextEntry
                 />
                 {errors.confirmPassword && touched.confirmPassword && (
-                  <Text>{errors.confirmPassword}</Text>
+                  <Text style={styles.errorText}>{errors.confirmPassword}</Text>
                 )}
               </View>
 
               {errors.error && <Text>{errors.error}</Text>}
-              <Text style={styles.linkText}>Вже зареєстровані? Увійти</Text>
-              <View style={styles.submit}>
-                <TouchableOpacity onPress={handleSubmit}>
+              <View style={styles.centered}>
+                <Text style={styles.linkText}>Вже зареєстровані? Увійти</Text>
+              </View>
+
+              <View style={styles.centered}>
+                <TouchableOpacity style={styles.submit} onPress={handleSubmit}>
                   <Text style={styles.buttonText}>Зареєструватися</Text>
                 </TouchableOpacity>
               </View>
-            </View>
+            </>
           )}
         </Formik>
-      </View>
+      </ImageBackground>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  scrollViewContainer: {
+    flexGrow: 1,
+  },
+  backgroundContainer: {
+    padding: 20,
     flex: 1,
     flexGrow: 1,
-    padding: 20,
-    backgroundColor: '#E5EFFB',
-    minHeight: 790,
+  },
+  centered: {
+    flex: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   heading: {
     color: 'black',
-    fontSize: 20,
-    fontWeight: '700',
+    fontSize: 23,
+    fontWeight: '800',
     wordWrap: 'break-word',
     textAlign: 'center',
     marginBottom: 30,
     marginTop: 50,
   },
   smallLabel: {
-    color: '#878787',
-    fontSize: 14,
+    width: '92%',
+    color: '#130F26',
+    fontSize: 15,
     fontStyle: 'normal',
     fontWeight: '600',
     lineHeight: 27,
-    marginLeft: 18,
+    marginLeft: 16,
     marginBottom: 0,
   },
   submit: {
     top: 50,
-    width: '70%',
-    left: '15%',
-    height: 50,
+    width: '80%',
+    height: 54,
     flexShrink: 0,
-    backgroundColor: '#8EB0D2',
+    backgroundColor: '#01161E',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    borderRadius: 14,
+    borderRadius: 30,
   },
   add: {
     width: 41,
@@ -240,7 +256,7 @@ const styles = StyleSheet.create({
     // boxShadow: '0px 4px 15px 0px rgba(0, 0, 0, 0.10)',
   },
   buttonText: {
-    fontSize: 17,
+    fontSize: 21,
     textAlign: 'center',
     fontWeight: '600',
     color: '#ffffff',
@@ -248,24 +264,25 @@ const styles = StyleSheet.create({
   input: {
     elevation: 5,
     shadowColor: 'gray',
-    width: '98%',
-    left: 4,
+    width: '95%',
     height: 41,
     flexShrink: 0,
     borderColor: 'white',
     borderWidth: 1,
     marginBottom: 20,
-    paddingLeft: 10,
-    borderRadius: 10,
+    paddingLeft: 15,
+    borderRadius: 20,
     backgroundColor: 'white',
     // boxShadow: '0px 4px 15px 0px rgba(0, 0, 0, 0.10)',
   },
   linkText: {
+    width: '92%',
+    marginLeft: 16,
     color: '#130F26',
-    fontSize: 14,
+    marginTop: 3,
+    fontSize: 15,
     fontWeight: '700',
     textDecorationLine: 'underline',
-    marginTop: 0,
   },
   estInput: {
     width: '84%',
@@ -293,6 +310,11 @@ const styles = StyleSheet.create({
     marginTop: 0,
     width: '100%',
     justifyContent: 'space-between',
+  },
+  errorText: {
+    color: 'red',
+    marginTop: -13,
+    marginBottom: 7,
   },
 });
 
