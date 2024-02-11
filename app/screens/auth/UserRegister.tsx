@@ -49,7 +49,6 @@ const UserRegister = () => {
 
     const func = async () => {
       const response: any = await register(addUser);
-      console.log('response : ', response);
       const {accessToken, role, userId, userName, email} = response;
       dispatch(updateUser({accessToken, role, userId, userName, email}));
       setSecureValue('token', accessToken);

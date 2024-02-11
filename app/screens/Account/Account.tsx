@@ -16,7 +16,6 @@ import {AccHeader} from './Header/AccountHeader';
 
 const Account = (props) => {
   const data = props.route.params
-  console.log("Accprops", props.route.params)
   const {theme} = useTheme();
 
   const inputRef = useRef<TextInput>(null);

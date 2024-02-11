@@ -1,14 +1,10 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {StyleSheet, FlatList, View, TextInput, Image, Text, Button, TouchableOpacity, ScrollView} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {useTheme} from '../../theme/useTheme';
+import {StyleSheet, View, TextInput, Image, Text, Button, TouchableOpacity, ScrollView} from 'react-native';
+import { useDispatch} from 'react-redux';
 import Payment from './Payment';
-import SocialPaymentForm from './PaymentCreate/PaymentCreateForm'; 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import { LinearGradient, Path, Svg } from 'react-native-svg';
-import axios from 'axios';
-import { getPayments } from '../../services/services/payment';
-import { RootState } from '../../store/store';
+import { payment } from '../../services/services/payment';
 import Card from '../../components/Card';
 
 
@@ -35,23 +31,27 @@ const SvgAdd = () => {
 };
 
 
-const Payments = (props) => {
+const Payments = (props : any) => {
+  
+const user = props.route.params
+const [payments, setPayments] = useState([])
+  
+const theme = useTheme()
 
-  const {theme} = useTheme();
 
-  let payments = []
 
-  let user 
-
-  async function fetchData() {
-    user = useSelector((state: RootState) => state.user);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await payment(user);
+        setPayments(response.$values)
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
     
-    const response :any  = await getPayments(user)
-    console.log("response : ", response )
-    
-      payments = response.$values
-  }
-  fetchData();
+    fetchData();
+  }, []);
 
   const navigation = useNavigation();
 
@@ -62,15 +62,15 @@ const Payments = (props) => {
   const [text, setText] = useState('');
 
 
-  
-
   const activityHandler = () => {
     navigation.navigate("PaymentsCreate", {steps: []});
   };
 
   return (
     <ScrollView style={styles.mainContainer}>
-     <View style={styles.autoLayerColumn}>
+      <View 
+      // style={styles.autoLayerColumn}
+      >
         <Text style={styles.socialPayments}>Соціальні виплати</Text>
         <View style = {styles.underTitle}>
         <Card>
@@ -80,7 +80,6 @@ const Payments = (props) => {
               ref={inputRef}
               placeholder="Знайти підтримку"
               placeholderTextColor={theme?.color}
-  
               onChangeText={t => setText(t)}
             />
           </View>
@@ -104,20 +103,31 @@ const Payments = (props) => {
            </View>
            </TouchableOpacity>
          </View> : <></>}
-
-
         </View>
-        {/* <View style={styles.rectangle}>
-          {payments.map((item)=>(
+        <View style={styles.rectangle}>
+          {payments.map((item: any)=>(
   <Payment
   key={item.id}
+  role={user.role}
   text={item.name}
   linkTo={'PaymentStruct'}
   payment={item.amount}
   id={item.id}/>
           ))}
-         
-        </View> */}
+          {/* <Payment
+            role ={data.role}
+            text={'Програма мікрофінансування бізнесу ветеранів та членів їхніх родин'}
+            linkTo={'PaymentStruct'}
+            payment={'122K'}
+            titlein='Хто має право на отримання одноразової грошової допомоги (ОГД) у разі загибелі (смерті) військовослужбовців?• батьки;• один із подружжя, який не одружився вдруге;• діти, які не досягли повноліття;• утриманці загиблого (померлого).Важливо! Особам, які мають право на одноразову грошову допомогу, виплата їхньої частки здійснюється незалежно від реалізації такого права іншими особами. Також, відповідно до редакції статті 16-1 Закону України «Про соціальний та правовий захист військовослужбовців та членів їх сімей», що діяла до 25 серпня 2022 року, право на призначення та отримання одноразової грошової допомоги мали члени сім’ї, батьки та утриманці загиблого (померлого) військовослужбовця. Відповідно до статті 3 Сімейного кодексу України сім’ю складають особи, які спільно проживають, пов’язані спільним побутом, мають взаємні права та обов`язки.'/>
+          <Payment
+            role ={data.role}
+            text={'Програма мікрофінансування бізнесу ветеранів та членів їхніх родин'}
+            linkTo={'PaymentStruct'}
+            payment={'122'}
+            titlein='aboba'
+          /> */}
+        </View>
       </View>
     </ScrollView>
   );
@@ -217,18 +227,6 @@ const styles = StyleSheet.create({
     zIndex: 11,
     overflow: 'hidden',
   },
-  autoLayerRow1: {
-    display: 'flex',
-    flexDirection: 'row',
-    // alignItems: 'center',
-    // justifyContent: 'space-between',
-    // position: 'absolute',
-    // width: 160,
-    // height: 26,
-    // top: 8,
-    // left: 9,
-    // zIndex: 12,
-  },
   arrowLeft: {
     // flexShrink: 0,
     // position: 'relative',
@@ -247,9 +245,9 @@ const styles = StyleSheet.create({
   },
   category2: {
     flexShrink: 0,
-    width: 141,
-    height: 26,
-     
+    // width: 141,
+    // height: 26,
+    paddingLeft: 20,
     color: 'rgb(0, 0, 0)',
     fontSize: 19,
     fontWeight: '300',

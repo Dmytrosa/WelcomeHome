@@ -49,18 +49,18 @@ const paymentsIconActive = ({color}: {color: ColorValue | number}) => (
   <Icon name="wallet" size={30} color={color} />
 );
 
-// Root Navigation
-// eslint-disable-next-line no-unused-vars
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function HelpStack() {
+  const user = useSelector((state: RootState) => state.user);
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="Help"
         component={Help}
         options={{headerShown: false}}
+        initialParams={user}
       />
     </Stack.Navigator>
   );
@@ -82,6 +82,7 @@ function CentersStack() {
 }
 
 function WorkStack() {
+  const user = useSelector((state: RootState) => state.user);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -94,6 +95,7 @@ function WorkStack() {
 }
 
 function AuthTEST() {
+  const user = useSelector((state: RootState) => state.user);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -118,7 +120,6 @@ function AuthTEST() {
         component={VolonteerRegister}
         options={{headerShown: false}}
       />
-      {/* TODO: додати параметри */}
       <Stack.Screen
         name="FlashScreen"
         component={FlashScreen}
@@ -132,7 +133,6 @@ function AuthTEST() {
 
 function PaymentsStack() {
   const user = useSelector((state: RootState) => state.user);
-
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -149,6 +149,7 @@ function PaymentsStack() {
       <Stack.Screen
         name="PaymentsCreate"
         component={SocialPaymentForm}
+        initialParams={user}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -166,6 +167,7 @@ function PaymentsStack() {
 }
 
 function TellScreen() {
+  const user = useSelector((state: RootState) => state.user);
   return (
     <View>
       <Text>Tell Screen</Text>
@@ -175,7 +177,6 @@ function TellScreen() {
 
 function AccountStack() {
   const user = useSelector((state: RootState) => state.user);
-  // console.log("here",user)
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -198,10 +199,7 @@ function AccountStack() {
 export default function RootNavigation() {
   const {theme} = useTheme();
   const dispatch = useDispatch();
-  // eslint-disable-next-line no-unused-vars
   const user = useSelector((state: RootState) => state.user);
-  console.log('user', user);
-  // Copy existing token from local storage to redux store
   useEffect(() => {
     async function checkIsLogined() {
       try {
@@ -211,7 +209,6 @@ export default function RootNavigation() {
     }
     checkIsLogined();
   }, [dispatch]);
-  //////////////////////////
 
   return (
     <SafeAreaView style={styles.container}>
@@ -235,6 +232,16 @@ export default function RootNavigation() {
             headerTitleStyle: {color: theme.color, fontSize: 16},
           }}>
           <Tab.Screen
+            name="AuthTEST"
+            component={AuthTEST}
+            options={{
+              tabBarStyle: {display: 'none'},
+              headerShown: false,
+              tabBarLabel: '',
+              tabBarVisible: false,
+            }}
+          />
+          <Tab.Screen
             name="Payments"
             component={PaymentsStack}
             options={{
@@ -243,19 +250,6 @@ export default function RootNavigation() {
               tabBarLabel: 'Виплати',
             }}
           />
-          <Tab.Screen
-            name="AuthTEST"
-            component={AuthTEST}
-            options={{
-              tabBarStyle: {display: 'none'},
-              // tabBarIcon: () => null,
-              // tabBarIcon: paymentsIcon,
-              headerShown: false,
-              tabBarLabel: '',
-              tabBarVisible: false,
-            }}
-          />
-
           <Tab.Screen
             name="Help"
             component={HelpStack}

@@ -10,11 +10,46 @@ import {
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
+import { paymentPost } from '../../../services/services/payment';
 
 const SocialPaymentForm = (props) => {
+// email: "test@test.test"
+// name: "Dmytro"
+// role: "volunteer"
+// steps: Array(0)
+// token: "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IkRteXRybyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InRlc3RAdGVzdC50ZXN0IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoidm9sdW50ZWVyIiwiZXhwIjoxNzA3NzQ3NTU0LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDk2O2h0dHA6Ly9sb2NhbGhvc3Q6NTAwNiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjcwOTY7aHR0cDovL2xvY2FsaG9zdDo1MDA2In0.gZgbt_idJ2C-pbcI-k3NNg6SnUqe9mfVmYNbfeRNma3qWtlZ-M-E1yZb_dFcAuvDLVpwfSzGsIojLvNaLSWqlg"
+// userId: 22
 
-  console.log("Props:")
-  console.log(props.route.params.steps)
+  
+
+
+  // {
+  //   "name": "string",
+  //   "description": "string",
+  //   "amount": 0,
+  //   "userCategoriesId": [
+  //     0
+  //   ],
+  //   "newPaymentSteps": [
+  //     {
+  //       "sequenceNumber": 0,
+  //       "description": "string",
+  //       "establishmentTypeId": 0,
+  //       "documentsBringId": [
+  //         0
+  //       ],
+  //       "documentsReceiveId": [
+  //         0
+  //       ]
+  //     }
+  //   ],
+  //   "existingPaymentSteps": [
+  //     {
+  //       "sequenceNumber": 0,
+  //       "stepId": 0
+  //     }
+  //   ]
+  // }
   
   const [error, setError] = useState('');
   const [category, setCategory] = useState('');
@@ -22,53 +57,38 @@ const SocialPaymentForm = (props) => {
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [steps, setSteps] = useState(props.route.params.steps);
-
-  useEffect(() => {
-    setSteps(props.route.params.steps);
-  }, [props.route.params.steps]);
-
-  // console.log("steps:")
-  // console.log(steps)
+  const [token, setToken] = useState(props.route.params.token);
 
   const navigation = useNavigation();
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     if (!category || !title || !description || !amount) {
       setError("Будь ласка, заповніть всі обов'язкові поля.");
       return;
     }
     const formData = {
+      name : title,
+      description: description,
+      amount: Number(amount),
+      steps: steps,
       category,
-      title,
-      description,
-      amount,
-      steps,
     };
-    console.log(formData); // Тут можна використовувати реальні дії, такі як відправлення даних на сервер або інші дії
-   
-   
-    setCategory('');
-    setTitle('');
-    setDescription('');
-    setAmount('');
-    setError('');
-    setSteps([]);
+    const user = {token: token}
+    await paymentPost(formData, user)
+    navigation.navigate("Payments", {token: token});
   };
 
   const activityHandler = () => {
-    // console.log(steps)
-    navigation.navigate("ChouseStep", {steps:steps});
+    navigation.navigate("ChouseStep", {steps:steps, token: token});
   };
 
   
   return (
     <ScrollView>
-
     <View style={styles.container}>
       <Text style={styles.heading}>
         Оберіть необхідні поля та створіть нову виплату
       </Text>
-
       <View style={styles.pick}>
         <Picker
           style={styles.picker}

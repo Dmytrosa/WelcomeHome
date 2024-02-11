@@ -1,41 +1,40 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {StyleSheet, View, TextInput,} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useTheme} from '../../theme/useTheme';
 import Layout from '../../components/Layout';
 import Card from '../../components/Card';
-import Event2 from './Events/event2';
-import Event from './Events/event1';
-import Event3 from './Events/event3';
+import Event from './Events/event';
+import { event } from '../../services/services/event';
 
-const Help = () => {
+const Help = (props) => {
+  const user = {...props}
+
   const {theme} = useTheme();
 
   const inputRef = useRef<TextInput>(null);
 
-  // const todoList = useSelector((state: RootState) => state.todos.entities);
-  // const loadingStatus = useSelector((state) => state.todos.status);
   const dispatch = useDispatch();
 
   const [text, setText] = useState('');
 
-  const addNewTask = () => {
-    let temp = text.trim();
-    if (temp !== '') {
-      dispatch(helpAdded({id: Date.now(), title: temp, done: false}));
-    }
-    inputRef.current?.clear();
-  };
+  const [events, setEvents] = useState()
 
-  const onCheckedHandler = (id: string) => {
-    dispatch(helpToggled(id));
-  };
-
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await event(user)
+        setEvents(response)
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+    
+    fetchData();
+  }, []);
   // const renderItem = ({item, index}: {item: Task; index: number}) => (
   //   <ListItem item={item} index={index} onPress={onCheckedHandler} />
   // );
-
-  const keyExtractor = (item: Task) => `task-${item.id}`;
 
   return (
     <Layout>
@@ -83,8 +82,6 @@ const Help = () => {
         </Text> */}
       </View>
       <Event text={'Психологічні служби'} />
-      <Event2 text={'Групи підтримки'} />
-      <Event3 text={'Благодійні заходи'} />
       {/* Tasks Listing starts here */}
       {/* <FlatList
         data={todoList}

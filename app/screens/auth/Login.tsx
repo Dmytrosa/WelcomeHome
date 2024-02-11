@@ -74,14 +74,11 @@ const Login = () => {
       };
 
       const response: any = await login(transformedObject);
-      console.log('response : ', response);
 
       const {accessToken, role, userId, userName, email} = response;
       dispatch(updateUser({accessToken, role, userId, userName, email}));
       setSecureValue('token', accessToken);
-      console.log('response', response);
       navigation.navigate('FlashScreen', {name: userName});
-      debugger;
     }
     fetchData();
 

@@ -1,14 +1,14 @@
-import axios from 'axios';
+import { paymentId } from '../../services/services/payment';
 import React, { useEffect, useState } from 'react';
-import {StyleSheet, View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, } from 'react-native';
-import Svg, {G, Path, Defs, ClipPath, Rect} from 'react-native-svg';
+import {StyleSheet, View, Text, ScrollView, TouchableWithoutFeedback, } from 'react-native';
+import Svg, {Path} from 'react-native-svg';
 
 type payStruct ={
     title: string
 }
 
 
-const TruncateText = ({ initialText, maxChars }) => {
+const TruncateText = ({ initialText = ".", maxChars= 1 }) => {
   const [expanded, setExpanded] = useState(false);
   const truncatedText = initialText.slice(0, maxChars);
   
@@ -43,38 +43,32 @@ const SvgEdit = () => {
 
 const PaymentStruct = ({ route }) => {
 
+
 const {id, token} = route.params
-console.log(token)
 const [payment, setPayment] = useState({});
 
+
 useEffect(() => {
-async function fetchData() {
-
-  try {
-    const response = await axios.get(`http://10.0.2.2:5006/api/SocialPayout/${id}` , {
-      headers: {
-        Authorization: `bearer ${token}`
-      }
-    });
-    
-    console.log("responseData", response)
-
-    if (response.status !== 200) {
-      throw new Error(`HTTP Error: ${response.status}`);
+  const fetchData = async () => {
+    try {
+      const user={token: token}
+      const params = {payoutId: id}
+      const response = await paymentId(user, params);
+//       $id: "1"
+// amount: 15000000
+// description: "Хто має право на ... "
+// id: 1
+// name: "Одноразова грошова допомога у разі загибелі військовослужбовця"
+// steps: Object
+    // $values: Array(0)
+// userCategories: null
+      
+      setPayment(response)
+    } catch (error) {
+      console.error("Error fetching data: ", error);
     }
-    
-    const responseData = response.data;
-    setPayment(responseData);
-
-    console.log("steps",responseData.steps.$values[0].documentsBring)
-
-
-  } catch (error) {
-    console.error('Помилка:', error.message);
-  }
-}
-
-fetchData();
+  };
+  fetchData();
 }, []); 
 
 
@@ -84,7 +78,7 @@ fetchData();
 
       <View>
          <Text style={styles.oneTimeFinancialAssistance}>
-         Матеріальна допомога на вирішення соціально-побутових питань військовослужбовців
+         {payment.name}
          </Text>
         <View style={styles.edit}>
           <View style={styles.autoLayerRow1}>
@@ -94,17 +88,7 @@ fetchData();
         </View>
         <View style={styles.description} >
             <Text style={styles.description5}>Опис</Text>
-           {/* <TruncateText  initialText={payment.description} maxChars={300} /> */}
-           <Text style={{padding: 10}}>
-           Підстави для виплати матеріальної допомоги на вирішення соціально-побутових питань для військовослужбовців:
- - смерть військовослужбовця та/або його дружини (чоловіка), дітей, батьків;
- - поранення, яке отримане під час виконання завдань під час воєнного стану;
- - інвалідність, отримана внаслідок поранення (контузії, травми, каліцтва), пов’язаного із захистом Батьківщини;
- - порушення стану здоров’я військовослужбовця, перебування його на лікуванні, реабілітації, що підтверджено відповідними медичними документами (виписний епікриз, довідка про захворювання, постанова військово-лікарської комісії), а саме:
-     - онкологічне захворювання (хірургічне лікування, променева та/або хімієтерапія);
-     - захворювання на туберкульоз, ВІЛ/СНІД, вірусний гепатит B, C;
-     - безперервне перебування на лікуванні, реабілітації або у відпустці для лікування у зв’язку із хворобою (сумарно більше як 30 днів поспіль) внаслідок травм, захворювань нервової, серцево-судинної систем, опорно-рухового апарату та інших захворювань органів і систем з тяжким перебігом або наслідками, що потребують проведення багатоетапного хірургічного лікування, протезування втраченої кінцівки (кінцівок), ендопротезування, трансплантації органів, індивідуального догляду, протирецидивного лікування з довготривалим застосуванням дорогих лікарських засобів.
-Матеріальна допомога також може виплачуватися сім’ям військовослужбовців, які захоплені в полон (крім військовослужбовців, які здалися в полон добровільно) чи заручниками, а також інтерновані в нейтральних державах або визнані безвісно відсутніми. </Text>
+           <TruncateText  initialText={payment.description} maxChars={200} />
         </View>
         <View style={styles.amount}>
           <View style={styles.autoLayerRow6}>
@@ -122,9 +106,11 @@ fetchData();
           </View>
         </View>
         <View style={styles.steps}>
+
+        {payment.steps && payment.steps.$values.map((step)=>{
           <View style={styles.step}>
           <View style={styles.autoLayerRowB}>
-            <Text style={styles.step1}>Крок 1.</Text>
+            <Text style={styles.step1}>Крок {step.num}.</Text>
             <View style={styles.editStep}>
           <View style={styles.autoLayerRow1}>
             <Text style={styles.edit2}>Редагувати</Text>
@@ -135,18 +121,19 @@ fetchData();
           </View>
         </View>
             <View style={styles.getDocuments}>
-              <Text style={styles.getDocumentsD}>              Подати рапорт на ім`я командира для отримання соцвиплати (У рапорті вказати причину звернення та додати документи, що її підтверджують )
-</Text>
+              <Text style={styles.getDocumentsD}>
+                {step.text1}
+              </Text>
               <Text style={styles.getDocumentsE}>
-                Принести: Рапорт на ім`я командира
+                {step.text2}
                 </Text>
             </View>
-            {/* <View style={styles.getDocuments}>
+            <View style={styles.getDocuments}>
               <Text style={styles.getDocumentsD}>Отримати&nbsp;документи:</Text>
               <Text style={styles.getDocumentsE}>
                 -&nbsp;витяг&nbsp;з&nbsp;наказу&nbsp;про&nbsp;виключення&nbsp;загиблого&nbsp;зі&nbsp;списку&nbsp;особового&nbsp;складу&nbsp;військової&nbsp;частини;-&nbsp;документ,&nbsp;що&nbsp;свідчить&nbsp;про&nbsp;причини&nbsp;та&nbsp;обставини&nbsp;загибелі&nbsp;(смерті)&nbsp;військового;-&nbsp;витяг&nbsp;з&nbsp;особової&nbsp;справи&nbsp;про&nbsp;склад&nbsp;сім'ї&nbsp;військовослужбовця.
               </Text>
-            </View> */}
+            </View>
             <View style ={styles.whereInfo}>
             <View style={styles.where}>
               <Text style={styles.where10}>Де ?</Text>
@@ -164,6 +151,8 @@ fetchData();
             </View>
           </View>
           </View>
+        }) }
+
         </View>
       </View>
       </ScrollView>

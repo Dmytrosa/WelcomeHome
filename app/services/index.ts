@@ -23,7 +23,6 @@ const executeRequest = async (
     params?: Record<string, string | number>;
   },
 ) => {
-
   let headers: AxiosRequestHeaders = {Accept: 'application/json'};
   if (user.token) {
     headers.Authorization = `bearer ${user.token}`;
@@ -41,7 +40,6 @@ const executeRequest = async (
   }
 
   
-
 
   if(body){
     return apiClient({
@@ -80,7 +78,7 @@ const routes = {
   establishmentVolonteer: 'Establishment/volonteer',
   byTypeByCity : 'byType/{typeId}/byCity/{cityId}',
   socPayout: 'api/SocialPayout',
-  socPayoutId: 'api/SocialPayout/{id}',
+  socPayoutId: 'api/SocialPayout/{payoutId}',
   stepId: '/Step/{id}',
   step: '/Step',
   byEstablishmentType: 'byEstablishmentType/{establishmentTypeId}',
@@ -96,4 +94,4 @@ const routes = {
 
 export {routes, executeRequest};
 export {login} from './services/auth';
-export {getPayments} from './services/payment';
+// export {getPayments} from './services/payment';
