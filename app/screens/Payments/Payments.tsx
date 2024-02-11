@@ -3,8 +3,9 @@ import {StyleSheet, View, TextInput, Image, Text, Button, TouchableOpacity, Scro
 import { useDispatch} from 'react-redux';
 import Payment from './Payment';
 import { useNavigation } from '@react-navigation/native';
-import { Path, Svg } from 'react-native-svg';
+import { LinearGradient, Path, Svg } from 'react-native-svg';
 import { payment } from '../../services/services/payment';
+import Card from '../../components/Card';
 
 
 type payments = {
@@ -72,6 +73,20 @@ const [payments, setPayments] = useState([])
       >
         <Text style={styles.socialPayments}>Соціальні виплати</Text>
         <View style = {styles.underTitle}>
+        <Card>
+        <View >
+          <View >
+            <TextInput
+              ref={inputRef}
+              placeholder="Знайти підтримку"
+              placeholderTextColor={theme?.color}
+  
+              onChangeText={t => setText(t)}
+            />
+          </View>
+        </View>
+      </Card>
+
         <View style={styles.category}>
           <View style={styles.autoLayerRow1}>
             <View style={styles.arrowLeft}>
@@ -98,9 +113,7 @@ const [payments, setPayments] = useState([])
   text={item.name}
   linkTo={'PaymentStruct'}
   payment={item.amount}
-  id={item.id}
-  token={user.token}
-  />
+  id={item.id}/>
           ))}
           {/* <Payment
             role ={data.role}
@@ -126,7 +139,7 @@ export default Payments;
 const styles = StyleSheet.create({
   mainContainer: {
     overflow: 'hidden',
-    backgroundColor: "white",
+    backgroundColor: "#DEFEFA",
     height: "100%"
   },
   autoLayerRow: {

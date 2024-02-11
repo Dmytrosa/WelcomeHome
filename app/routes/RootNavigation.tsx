@@ -43,7 +43,10 @@ const workIcon = ({color}: {color: ColorValue | number}) => (
   <Icon name="briefcase-outline" size={30} color={color} />
 );
 const paymentsIcon = ({color}: {color: ColorValue | number}) => (
-  <Icon name="cash-outline" size={30} color={color} />
+  <Icon name="wallet-outline" size={30} color={color} />
+);
+const paymentsIconActive = ({color}: {color: ColorValue | number}) => (
+  <Icon name="wallet" size={30} color={color} />
 );
 
 const Stack = createNativeStackNavigator();
@@ -212,18 +215,19 @@ export default function RootNavigation() {
       <StatusBar
         animated
         backgroundColor={theme.accent}
-        barStyle={'light-content'}
+        barStyle={'dark-content'}
+        
       />
       <NavigationContainer>
-        <StatusBar backgroundColor="#afc9de" barStyle="light-content" />
+      <StatusBar backgroundColor={'#DEFEFA'} barStyle="dark-content" />
 
         {/* {user.token ? ( */}
 
         <Tab.Navigator
           screenOptions={{
-            tabBarStyle: {backgroundColor: theme.cardBg},
-            tabBarInactiveTintColor: theme.color,
-            tabBarActiveTintColor: theme.accent,
+            tabBarStyle: {backgroundColor: '#01161E'},
+            tabBarInactiveTintColor: 'white',
+            tabBarActiveTintColor: 'white',
             headerStyle: {backgroundColor: theme.cardBg, height: 50},
             headerTitleStyle: {color: theme.color, fontSize: 16},
           }}>
@@ -243,7 +247,7 @@ export default function RootNavigation() {
             options={{
               tabBarIcon: paymentsIcon,
               headerShown: false,
-              tabBarLabel: '',
+              tabBarLabel: 'Виплати',
             }}
           />
           <Tab.Screen

@@ -42,7 +42,7 @@ const LoginSchema = Yup.object().shape({
     .max(100, 'Too Long!')
     .required('Required'),
   password: Yup.string()
-    .min(8, 'Too Short!')
+    .min(3, 'Too Short!')
     .max(30, 'Too Long!')
     .required('Required'),
 });
