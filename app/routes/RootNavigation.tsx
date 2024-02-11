@@ -46,25 +46,24 @@ const paymentsIcon = ({color}: {color: ColorValue | number}) => (
   <Icon name="cash-outline" size={30} color={color} />
 );
 
-// Root Navigation
-// eslint-disable-next-line no-unused-vars
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function HelpStack() {
+function HelpStack(user: any) {
+
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="Help"
         component={Help}
         options={{headerShown: false}}
+        initialParams={user}
       />
     </Stack.Navigator>
   );
 }
 
-function CentersStack() {
-  const user = useSelector((state: RootState) => state.user);
+function CentersStack(user) {
 
   return (
     <Stack.Navigator>
@@ -78,7 +77,7 @@ function CentersStack() {
   );
 }
 
-function WorkStack() {
+function WorkStack(user) {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -90,7 +89,7 @@ function WorkStack() {
   );
 }
 
-function AuthTEST() {
+function AuthTEST(user) {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -115,7 +114,6 @@ function AuthTEST() {
         component={VolonteerRegister}
         options={{headerShown: false}}
       />
-      {/* TODO: додати параметри */}
       <Stack.Screen
         name="FlashScreen"
         component={FlashScreen}
@@ -127,8 +125,7 @@ function AuthTEST() {
   );
 }
 
-function PaymentsStack() {
-  const user = useSelector((state: RootState) => state.user);
+function PaymentsStack(user) {
 
   return (
     <Stack.Navigator>
@@ -162,7 +159,7 @@ function PaymentsStack() {
   );
 }
 
-function TellScreen() {
+function TellScreen(user) {
   return (
     <View>
       <Text>Tell Screen</Text>
@@ -170,9 +167,7 @@ function TellScreen() {
   );
 }
 
-function AccountStack() {
-  const user = useSelector((state: RootState) => state.user);
-  // console.log("here",user)
+function AccountStack(user) {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -195,10 +190,7 @@ function AccountStack() {
 export default function RootNavigation() {
   const {theme} = useTheme();
   const dispatch = useDispatch();
-  // eslint-disable-next-line no-unused-vars
   const user = useSelector((state: RootState) => state.user);
-  console.log('user', user);
-  // Copy existing token from local storage to redux store
   useEffect(() => {
     async function checkIsLogined() {
       try {
@@ -208,7 +200,6 @@ export default function RootNavigation() {
     }
     checkIsLogined();
   }, [dispatch]);
-  //////////////////////////
 
   return (
     <SafeAreaView style={styles.container}>
@@ -231,8 +222,18 @@ export default function RootNavigation() {
             headerTitleStyle: {color: theme.color, fontSize: 16},
           }}>
           <Tab.Screen
+            name="AuthTEST"
+            component={()=>AuthTEST(user)}
+            options={{
+              tabBarStyle: {display: 'none'},
+              headerShown: false,
+              tabBarLabel: '',
+              tabBarVisible: false,
+            }}
+          />
+          <Tab.Screen
             name="Payments"
-            component={PaymentsStack}
+            component={()=>PaymentsStack(user)}
             options={{
               tabBarIcon: paymentsIcon,
               headerShown: false,
@@ -240,21 +241,8 @@ export default function RootNavigation() {
             }}
           />
           <Tab.Screen
-            name="AuthTEST"
-            component={AuthTEST}
-            options={{
-              tabBarStyle: {display: 'none'},
-              // tabBarIcon: () => null,
-              // tabBarIcon: paymentsIcon,
-              headerShown: false,
-              tabBarLabel: '',
-              tabBarVisible: false,
-            }}
-          />
-
-          <Tab.Screen
             name="Help"
-            component={HelpStack}
+            component={()=>HelpStack(user)}
             options={{
               tabBarIcon: helpIcon,
               headerShown: false,
@@ -263,7 +251,7 @@ export default function RootNavigation() {
           />
           <Tab.Screen
             name="Centers"
-            component={CentersStack}
+            component={()=>CentersStack(user)}
             options={{
               tabBarIcon: centersIcon,
               headerShown: false,
@@ -272,7 +260,7 @@ export default function RootNavigation() {
           />
           <Tab.Screen
             name="Work"
-            component={WorkStack}
+            component={()=>WorkStack(user)}
             options={{
               headerStatusBarHeight: 0,
               tabBarIcon: workIcon,
@@ -283,7 +271,7 @@ export default function RootNavigation() {
 
           <Tab.Screen
             name="Account"
-            component={AccountStack}
+            component={()=>AccountStack(user)}
             options={{
               tabBarIcon: accIcon,
               headerShown: false,

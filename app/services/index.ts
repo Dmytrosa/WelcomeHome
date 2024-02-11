@@ -23,7 +23,7 @@ const executeRequest = async (
     params?: Record<string, string | number>;
   },
 ) => {
-
+// debugger
   let headers: AxiosRequestHeaders = {Accept: 'application/json'};
   if (user.token) {
     headers.Authorization = `bearer ${user.token}`;
@@ -42,7 +42,7 @@ const executeRequest = async (
 
   
 
-
+// debugger
   if(body){
     return apiClient({
       method: method,
@@ -96,4 +96,4 @@ const routes = {
 
 export {routes, executeRequest};
 export {login} from './services/auth';
-export {getPayments} from './services/payment';
+// export {getPayments} from './services/payment';

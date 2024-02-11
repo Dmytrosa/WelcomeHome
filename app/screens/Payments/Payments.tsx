@@ -1,14 +1,10 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {StyleSheet, FlatList, View, TextInput, Image, Text, Button, TouchableOpacity, ScrollView} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {useTheme} from '../../theme/useTheme';
+import {StyleSheet, View, TextInput, Image, Text, Button, TouchableOpacity, ScrollView} from 'react-native';
+import { useDispatch} from 'react-redux';
 import Payment from './Payment';
-import SocialPaymentForm from './PaymentCreate/PaymentCreateForm'; 
 import { useNavigation } from '@react-navigation/native';
 import { Path, Svg } from 'react-native-svg';
-import axios from 'axios';
-import { getPayments } from '../../services/services/payment';
-import { RootState } from '../../store/store';
+import { payment } from '../../services/services/payment';
 
 
 type payments = {
@@ -34,21 +30,28 @@ const SvgAdd = () => {
 };
 
 
-const Payments = (props) => {
+const Payments = (props : any) => {
+  
+const user = props.route.params
+const [payments, setPayments] = useState([])
+  
 
-  let payments = []
 
-  let user 
 
-  async function fetchData() {
-    user = useSelector((state: RootState) => state.user);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // debugger
+        const response = await payment(user);
+        setPayments(response.$values)
+        console.log("payments: ", payments);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
     
-    const response :any  = await getPayments(user)
-    console.log("response : ", response )
-    
-      payments = response.$values
-  }
-  fetchData();
+    fetchData();
+  }, []);
 
   const navigation = useNavigation();
 
@@ -59,15 +62,15 @@ const Payments = (props) => {
   const [text, setText] = useState('');
 
 
-  
-
   const activityHandler = () => {
     navigation.navigate("PaymentsCreate", {steps: []});
   };
 
   return (
     <ScrollView style={styles.mainContainer}>
-      <View style={styles.autoLayerColumn}>
+      <View 
+      // style={styles.autoLayerColumn}
+      >
         <Text style={styles.socialPayments}>Соціальні виплати</Text>
         <View style = {styles.underTitle}>
         <View style={styles.category}>
@@ -87,17 +90,19 @@ const Payments = (props) => {
            </View>
            </TouchableOpacity>
          </View> : <></>}
-
-
         </View>
         <View style={styles.rectangle}>
-          {payments.map((item)=>(
+          {payments.map((item: any)=>(
+            
   <Payment
   key={item.id}
+  role={user.role}
   text={item.name}
   linkTo={'PaymentStruct'}
   payment={item.amount}
-  id={item.id}/>
+  id={item.id}
+  token={user.token}
+  />
           ))}
           {/* <Payment
             role ={data.role}
@@ -212,18 +217,6 @@ const styles = StyleSheet.create({
     zIndex: 11,
     overflow: 'hidden',
   },
-  autoLayerRow1: {
-    display: 'flex',
-    flexDirection: 'row',
-    // alignItems: 'center',
-    // justifyContent: 'space-between',
-    // position: 'absolute',
-    // width: 160,
-    // height: 26,
-    // top: 8,
-    // left: 9,
-    // zIndex: 12,
-  },
   arrowLeft: {
     // flexShrink: 0,
     // position: 'relative',
@@ -242,9 +235,9 @@ const styles = StyleSheet.create({
   },
   category2: {
     flexShrink: 0,
-    width: 141,
-    height: 26,
-     
+    // width: 141,
+    // height: 26,
+    paddingLeft: 20,
     color: 'rgb(0, 0, 0)',
     fontSize: 19,
     fontWeight: '300',

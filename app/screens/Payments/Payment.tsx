@@ -13,6 +13,7 @@ type center = {
   token: string;
 };
 
+
 const Payment = (props: center) => {
   const {theme} = useTheme();
 

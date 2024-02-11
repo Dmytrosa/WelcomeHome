@@ -8,8 +8,9 @@ export const paymentDelete = async (body: any) => {
   const response =  await executeRequest( 'DELETE' , `${routes.socPayout}`, {body});
   if (response.status == 200 )return response.data
 };
-export const payment = async (body: any) => {
-  const response =  await executeRequest( 'GET' , `${routes.socPayout}`, {body});
+export const payment = async (user: any) => {
+  // debugger
+  const response =  await executeRequest( 'GET' , `${routes.socPayout}`, {user});
   if (response.status == 200 )return response.data
 };
 export const paymentId = async (body: any) => {
