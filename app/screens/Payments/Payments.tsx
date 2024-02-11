@@ -2,7 +2,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import {StyleSheet, View, TextInput, Image, Text, Button, TouchableOpacity, ScrollView} from 'react-native';
 import { useDispatch} from 'react-redux';
 import Payment from './Payment';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import { LinearGradient, Path, Svg } from 'react-native-svg';
 import { payment } from '../../services/services/payment';
 import Card from '../../components/Card';
@@ -32,17 +32,17 @@ const SvgAdd = () => {
 
 
 const Payments = (props : any) => {
-  debugger
+  
 const user = props.route.params
 const [payments, setPayments] = useState([])
   
+const theme = useTheme()
 
 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // debugger
         const response = await payment(user);
         setPayments(response.$values)
       } catch (error) {
@@ -80,7 +80,6 @@ const [payments, setPayments] = useState([])
               ref={inputRef}
               placeholder="Знайти підтримку"
               placeholderTextColor={theme?.color}
-  
               onChangeText={t => setText(t)}
             />
           </View>

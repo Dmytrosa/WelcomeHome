@@ -15,7 +15,7 @@ type center = {
 
 
 const Payment = (props: center) => {
-  debugger
+
   const {theme} = useTheme();
   const navigation = useNavigation();
 

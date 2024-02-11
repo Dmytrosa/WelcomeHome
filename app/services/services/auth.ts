@@ -2,7 +2,6 @@ import {routes, executeRequest} from '../index';
 
 export const login = async (body: any) => {
   const response =  await executeRequest( 'POST' , `${routes.login}`, {body});
-  // debugger
   const email = body.email
   return {...response.data, email}
 };

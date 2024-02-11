@@ -100,7 +100,7 @@ const StepCreateSchema = Yup.object().shape({
 });
 
 const StepCreate = (props) => {
-  debugger
+  
   const [token, setToken] = useState(props.route.params.token)
   // Замість useNavigation можна використовувати navigation prop в компоненті, який постачається з Navigator
   const navigation = useNavigation();

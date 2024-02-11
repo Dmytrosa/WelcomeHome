@@ -59,7 +59,7 @@ const TruncateText = ({initialText, maxChars}) => {
 
 
 const ChouseStep = (props) => {
-  debugger
+  
   const [steps, setSteps] = useState(props.route.params.steps)
   const [token, setToken] = useState(props.route.params.token)
   const [stepsForChoise, setStepsForChoise] = useState([]);
@@ -72,9 +72,9 @@ const ChouseStep = (props) => {
   useEffect(()=>{
     const fetchData = async () => {
       try {
-        debugger
+        
         const response = await payment(user);
-        debugger
+        
 
         setStepsForChoise(response.$values)
       } catch (error) {

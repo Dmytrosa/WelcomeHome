@@ -43,7 +43,6 @@ const SvgEdit = () => {
 
 const PaymentStruct = ({ route }) => {
 
-debugger
 
 const {id, token} = route.params
 const [payment, setPayment] = useState({});
@@ -63,7 +62,7 @@ useEffect(() => {
 // steps: Object
     // $values: Array(0)
 // userCategories: null
-      debugger
+      
       setPayment(response)
     } catch (error) {
       console.error("Error fetching data: ", error);
