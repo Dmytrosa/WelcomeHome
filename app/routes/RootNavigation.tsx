@@ -49,8 +49,8 @@ const paymentsIcon = ({color}: {color: ColorValue | number}) => (
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function HelpStack(user: any) {
-
+function HelpStack() {
+  const user = useSelector((state: RootState) => state.user);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -63,7 +63,8 @@ function HelpStack(user: any) {
   );
 }
 
-function CentersStack(user) {
+function CentersStack() {
+  const user = useSelector((state: RootState) => state.user);
 
   return (
     <Stack.Navigator>
@@ -77,7 +78,8 @@ function CentersStack(user) {
   );
 }
 
-function WorkStack(user) {
+function WorkStack() {
+  const user = useSelector((state: RootState) => state.user);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -89,7 +91,8 @@ function WorkStack(user) {
   );
 }
 
-function AuthTEST(user) {
+function AuthTEST() {
+  const user = useSelector((state: RootState) => state.user);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -125,8 +128,8 @@ function AuthTEST(user) {
   );
 }
 
-function PaymentsStack(user) {
-
+function PaymentsStack() {
+  const user = useSelector((state: RootState) => state.user);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -143,6 +146,7 @@ function PaymentsStack(user) {
       <Stack.Screen
         name="PaymentsCreate"
         component={SocialPaymentForm}
+        initialParams={user}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -159,7 +163,8 @@ function PaymentsStack(user) {
   );
 }
 
-function TellScreen(user) {
+function TellScreen() {
+  const user = useSelector((state: RootState) => state.user);
   return (
     <View>
       <Text>Tell Screen</Text>
@@ -167,7 +172,8 @@ function TellScreen(user) {
   );
 }
 
-function AccountStack(user) {
+function AccountStack() {
+  const user = useSelector((state: RootState) => state.user);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -223,7 +229,7 @@ export default function RootNavigation() {
           }}>
           <Tab.Screen
             name="AuthTEST"
-            component={()=>AuthTEST(user)}
+            component={AuthTEST}
             options={{
               tabBarStyle: {display: 'none'},
               headerShown: false,
@@ -233,7 +239,7 @@ export default function RootNavigation() {
           />
           <Tab.Screen
             name="Payments"
-            component={()=>PaymentsStack(user)}
+            component={PaymentsStack}
             options={{
               tabBarIcon: paymentsIcon,
               headerShown: false,
@@ -242,7 +248,7 @@ export default function RootNavigation() {
           />
           <Tab.Screen
             name="Help"
-            component={()=>HelpStack(user)}
+            component={HelpStack}
             options={{
               tabBarIcon: helpIcon,
               headerShown: false,
@@ -251,7 +257,7 @@ export default function RootNavigation() {
           />
           <Tab.Screen
             name="Centers"
-            component={()=>CentersStack(user)}
+            component={CentersStack}
             options={{
               tabBarIcon: centersIcon,
               headerShown: false,
@@ -260,7 +266,7 @@ export default function RootNavigation() {
           />
           <Tab.Screen
             name="Work"
-            component={()=>WorkStack(user)}
+            component={WorkStack}
             options={{
               headerStatusBarHeight: 0,
               tabBarIcon: workIcon,
@@ -271,7 +277,7 @@ export default function RootNavigation() {
 
           <Tab.Screen
             name="Account"
-            component={()=>AccountStack(user)}
+            component={AccountStack}
             options={{
               tabBarIcon: accIcon,
               headerShown: false,

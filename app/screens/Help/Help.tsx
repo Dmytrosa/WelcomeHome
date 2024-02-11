@@ -25,7 +25,6 @@ const Help = (props) => {
       try {
         const response = await event(user)
         setEvents(response)
-        console.log("events: ", events);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }

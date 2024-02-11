@@ -15,12 +15,8 @@ type center = {
 
 
 const Payment = (props: center) => {
+  debugger
   const {theme} = useTheme();
-
-  const inputRef = useRef<TextInput>(null);
-
-  const dispatch = useDispatch();
-
   const navigation = useNavigation();
 
   const activityHandler = () => {
@@ -34,7 +30,7 @@ const Payment = (props: center) => {
         <View style={styles.autoLayer}>
           <Text style={styles.infoText}>{props.text}</Text>
           <View style={styles.rectangle} />
-          <Text style={styles.payment}>{props.payment} 0 ₴</Text>
+          <Text style={styles.payment}>{props.payment} ₴</Text>
           <View style={styles.line} />
         </View>
       </View>

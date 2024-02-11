@@ -91,7 +91,6 @@ const VolonteerRegisterSchema = Yup.object().shape({
               };
             const func = async ()=>{
               const response :any  = await registerVolonteer(transformedObject)
-              console.log("response : ", response )
                 const {accessToken, role, userId, userName, email} = response;
                   dispatch(updateUser({accessToken, role, userId, userName, email}));
                   setSecureValue('token', accessToken);

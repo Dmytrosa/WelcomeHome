@@ -31,7 +31,7 @@ const SvgAdd = () => {
 
 
 const Payments = (props : any) => {
-  
+  debugger
 const user = props.route.params
 const [payments, setPayments] = useState([])
   
@@ -44,7 +44,6 @@ const [payments, setPayments] = useState([])
         // debugger
         const response = await payment(user);
         setPayments(response.$values)
-        console.log("payments: ", payments);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -93,7 +92,6 @@ const [payments, setPayments] = useState([])
         </View>
         <View style={styles.rectangle}>
           {payments.map((item: any)=>(
-            
   <Payment
   key={item.id}
   role={user.role}

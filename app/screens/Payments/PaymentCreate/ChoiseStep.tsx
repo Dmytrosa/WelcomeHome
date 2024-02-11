@@ -13,76 +13,76 @@ import {Picker} from '@react-native-picker/picker';
 import {useNavigation} from '@react-navigation/native';
 import {Path, Svg} from 'react-native-svg';
 
-const ChouseStep = (props) => {
-  // console.log(props.route.params.steps)
-  
-  // const [steps, setSteps] = useState(props.route.params.steps)
+const SvgAdd = () => {
+  return (
+    <View
+      style={[
+        StyleSheet.absoluteFill,
+        styles.add,
+        {alignItems: 'center', justifyContent: 'center'},
+      ]}>
+      <Svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <Path
+          d="M6.00002 1.40912V10.5671"
+          stroke="white"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <Path
+          d="M10.5834 5.9881H1.41675"
+          stroke="white"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </Svg>
+    </View>
+  );
+};
+const TruncateText = ({initialText, maxChars}) => {
+  const [expanded, setExpanded] = useState(false);
+  const truncatedText = initialText.slice(0, maxChars);
 
-  const SvgAdd = () => {
-    return (
-      <View
-        style={[
-          StyleSheet.absoluteFill,
-          styles.add,
-          {alignItems: 'center', justifyContent: 'center'},
-        ]}>
-        <Svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <Path
-            d="M6.00002 1.40912V10.5671"
-            stroke="white"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <Path
-            d="M10.5834 5.9881H1.41675"
-            stroke="white"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </Svg>
+  return (
+    <TouchableWithoutFeedback onPress={() => setExpanded(!expanded)}>
+      <View>
+        <Text style={{fontSize: 17}}>
+          {expanded ? initialText : truncatedText}
+          {initialText.length > maxChars && !expanded && '...'}
+        </Text>
       </View>
-    );
-  };
+    </TouchableWithoutFeedback>
+  );
+};
 
-  const TruncateText = ({initialText, maxChars}) => {
-    const [expanded, setExpanded] = useState(false);
-    const truncatedText = initialText.slice(0, maxChars);
 
-    return (
-      <TouchableWithoutFeedback onPress={() => setExpanded(!expanded)}>
-        <View>
-          <Text style={{fontSize: 17}}>
-            {expanded ? initialText : truncatedText}
-            {initialText.length > maxChars && !expanded && '...'}
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
-    );
-  };
 
-  // const [steps, setSteps] = useState([props.steps]);
-  const [stepsForChoise, setStepsForChoise] = useState([
-    {
-      id: 0,
-      title: "Звернення до військового командира.",
-      text: "- витяг з наказу про виключення загиблого зі списку особового складу військової частини; - документ, що свідчить про причини та обставини загибелі (смерті) військового; - витяг з особової справи про склад сім'ї військовослужбовця."
-    },
-    {
-      id: 1,
-      title: "Звернення до міністра.",
-      text: "- 2 витяг з наказу про виключення загиблого зі списку особового складу військової частини; - документ, що свідчить про причини та обставини загибелі (смерті) військового; - витяг з особової справи про склад сім'ї військовослужбовця."
-    },
-    {
-      id: 2,
-      title: "3 Звернення до військового командира.",
-      text: "- 3 витяг з наказу про виключення загиблого зі списку особового складу військової частини; - документ, що свідчить про причини та обставини загибелі (смерті) військового; - витяг з особової справи про склад сім'ї військовослужбовця."
-    },
-  ]);
+const ChouseStep = (props) => {
+  debugger
+  const [steps, setSteps] = useState(props.route.params.steps)
+  const [token, setToken] = useState(props.route.params.token)
+  const [stepsForChoise, setStepsForChoise] = useState([]);
+
+
+
+
+
 
   useEffect(()=>{
-    // fetch(...).setStepsForChoise(response)
+    const fetchData = async () => {
+      try {
+        debugger
+        const response = await payment(user);
+        debugger
+
+        setStepsForChoise(response.$values)
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+    
+    fetchData();
   }, [])
 
 
@@ -90,15 +90,12 @@ const ChouseStep = (props) => {
   const navigation = useNavigation();
 
   const activityHandler = (id) => {
-    let steps = props.route.params.steps
-    console.log("steps")
-    console.log(props.route.params.steps)
-    steps = [...steps, stepsForChoise[id]] 
-    navigation.navigate('PaymentsCreate', {steps:steps});
+    let stepsNew = [...steps, stepsForChoise[id]] 
+    navigation.navigate('PaymentsCreate', {stepsNew:stepsNew, steps: steps, token:token});
   };
 
   const addStepHandler = () => { 
-    navigation.navigate('StepCreate');
+    navigation.navigate('StepCreate', {token:token});
   };
 
   return (
@@ -144,7 +141,7 @@ const ChouseStep = (props) => {
                   Отримати документи:
                 </Text>
                 <View style={styles.span}>
-                  <TruncateText initialText={el.text} maxChars={200} />
+                  {/* <TruncateText initialText={el.text} maxChars={200} /> */}
                 </View>
               </View>
                         <TouchableOpacity onPress={()=>{activityHandler(el.id)}}>
