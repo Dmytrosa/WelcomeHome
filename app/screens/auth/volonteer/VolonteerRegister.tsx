@@ -93,32 +93,34 @@ const VolonteerRegister = () => {
               organization: organizationNumber,
             };
 
-              const transformedObject = {
-                fullName: newValues.fullName,
-                phoneNumber: newValues.phone, 
-                email: newValues.email,
-                socialUrl: newValues.socialMediaLink, 
-                establishmentId: newValues.organization,
-                password: newValues.password,
-              };
-            const func = async ()=>{
-              const response :any  = await registerVolonteer(transformedObject)
-                const {accessToken, role, userId, userName, email} = response;
-                  dispatch(updateUser({accessToken, role, userId, userName, email}));
-                  setSecureValue('token', accessToken);
-                  navigation.navigate('ChooseRole', {name: userName});
-            }
-            func()
-            }}
-          >
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              errors,
-              touched,
-            }) => (
+            const transformedObject = {
+              fullName: newValues.fullName,
+              phoneNumber: newValues.phone,
+              email: newValues.email,
+              socialUrl: newValues.socialMediaLink,
+              establishmentId: newValues.organization,
+              password: newValues.password,
+            };
+            const func = async () => {
+              const response: any = await registerVolonteer(transformedObject);
+              const {accessToken, role, userId, userName, email} = response;
+              dispatch(
+                updateUser({accessToken, role, userId, userName, email}),
+              );
+              setSecureValue('token', accessToken);
+              navigation.navigate('ChooseRole', {name: userName});
+            };
+            func();
+          }}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+          }) => (
+            <>
               <View>
                 <Text style={styles.smallLabel}>Повне ім'я (ПІБ)</Text>
                 <TextInput
