@@ -58,7 +58,7 @@ const UserRegister = () => {
   };
   const SVG = () => {
     return (
-      <Svg width="10" height="16" viewBox="0 0 10 16" fill="none">
+      <Svg width="25" height="25" viewBox="0 0 10 16" fill="none">
         <Path
           d="M8.5 15L1.5 8L8.5 1"
           stroke="#101010"
@@ -81,7 +81,7 @@ const UserRegister = () => {
         source={require('../../../assets/bgr_darkBlue_blue.png')}
         resizeMode="cover"
         style={styles.backgroundContainer}>
-        <View style={styles.backButton}>
+        <View style={styles.backButton} style={{top: 30}}>
           <TouchableOpacity onPress={goBack}>
             <SVG />
           </TouchableOpacity>
@@ -178,14 +178,15 @@ const UserRegister = () => {
               </View>
 
               {errors.error && <Text>{errors.error}</Text>}
-              <View style={styles.centered}>
-                <Text style={styles.linkText}>Вже зареєстровані? Увійти</Text>
-              </View>
+
 
               <View style={styles.centered}>
                 <TouchableOpacity style={styles.submit} onPress={handleSubmit}>
                   <Text style={styles.buttonText}>Зареєструватися</Text>
                 </TouchableOpacity>
+                <View style={styles.login}>
+                <Text style={styles.linkText}>Вже зареєстровані? Увійти</Text>
+              </View>
               </View>
             </>
           )}
@@ -196,8 +197,18 @@ const UserRegister = () => {
 };
 
 const styles = StyleSheet.create({
+  login:{
+    display: "flex",
+    fontSize: 15,
+    top:"50%",
+    fontWeight: '600',
+    textDecorationLine: 'underline',
+    color: 'black',
+  },
   scrollViewContainer: {
     flexGrow: 1,
+    marginTop: -20
+
   },
   backgroundContainer: {
     padding: 20,
@@ -229,7 +240,7 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   submit: {
-    top: 50,
+    top: 10,
     width: '80%',
     height: 54,
     flexShrink: 0,

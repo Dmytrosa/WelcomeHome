@@ -39,7 +39,7 @@ const VolonteerRegisterSchema = Yup.object().shape({
 
 const SVG = () => {
   return (
-    <Svg width="10" height="16" viewBox="0 0 10 16" fill="none">
+    <Svg width="25" height="25" viewBox="0 0 10 16" fill="none">
       <Path
         d="M8.5 15L1.5 8L8.5 1"
         stroke="#101010"
@@ -68,7 +68,7 @@ const VolonteerRegister = () => {
         source={require('../../../../assets/bgr_darkBlue_blue.png')}
         resizeMode="cover"
         style={styles.backgroundContainer}>
-        <View>
+        <View style={{top: 30}}>
           <TouchableOpacity onPress={goBack}>
             <SVG />
           </TouchableOpacity>
@@ -106,8 +106,8 @@ const VolonteerRegister = () => {
                 const {accessToken, role, userId, userName, email} = response;
                   dispatch(updateUser({accessToken, role, userId, userName, email}));
                   setSecureValue('token', accessToken);
-                  navigation.navigate('ChooseRole', {name: userName});
-            }
+                  navigation.navigate('FlashScreen', {name: userName});
+                }
             func()
             }}
           >
@@ -119,7 +119,8 @@ const VolonteerRegister = () => {
               errors,
               touched,
             }) => (
-              <View>
+              <View >
+              <View style={styles.centered}>
                 <Text style={styles.smallLabel}>Повне ім'я (ПІБ)</Text>
                 <TextInput
                   style={styles.input}
@@ -221,16 +222,18 @@ const VolonteerRegister = () => {
                   */}
               {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-              <View style={styles.centered}>
-                <Text style={styles.linkText}>Вже зареєстровані? Увійти</Text>
-              </View>
+             
 
               <View style={styles.centered}>
                 <TouchableOpacity onPress={handleSubmit} style={styles.submit}>
                   <Text style={styles.buttonText}>Далі</Text>
                 </TouchableOpacity>
+                <View style={styles.login}>
+                <Text style={styles.linkText}>Вже зареєстровані? Увійти</Text>
               </View>
-            </>
+              </View>
+              
+            </View>
           )}
         </Formik>
       </ImageBackground>
@@ -239,6 +242,13 @@ const VolonteerRegister = () => {
 };
 
 const styles = StyleSheet.create({
+  login:{
+    fontSize: 15,
+    top:"50%",
+    fontWeight: '600',
+    textDecorationLine: 'underline',
+    color: 'black',
+  },
   backButton: {
     left: -5,
     top: -5,
@@ -254,6 +264,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     flexGrow: 1,
+    marginTop: -20
   },
   backgroundContainer: {
     padding: 20,
@@ -285,7 +296,7 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   submit: {
-    top: 50,
+    top: 10,
     width: '80%',
     height: 54,
     flexShrink: 0,

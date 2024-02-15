@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     // marginBottom: 30,
     textDecorationLine: 'underline',
     // marginTop:100,
-    top: 80,
+    top: 30,
     color: 'black',
   },
 });
