@@ -19,6 +19,7 @@ import {useDispatch} from 'react-redux';
 import {updateUser} from '../../store/userSlice';
 import {setSecureValue} from '../../utils/keyChain';
 import {register} from '../../services/services/auth';
+import { BackSVG } from './volonteer/ChooseOrg';
 
 const StepCreateSchema = Yup.object().shape({
   fullName: Yup.string().required("Це поле є обов'язковим"),
@@ -56,19 +57,6 @@ const UserRegister = () => {
     };
     func();
   };
-  const SVG = () => {
-    return (
-      <Svg width="25" height="25" viewBox="0 0 10 16" fill="none">
-        <Path
-          d="M8.5 15L1.5 8L8.5 1"
-          stroke="#101010"
-          stroke-width="1.66667"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </Svg>
-    );
-  };
 
   const navigator = useNavigation();
 
@@ -83,7 +71,7 @@ const UserRegister = () => {
         style={styles.backgroundContainer}>
         <View style={styles.backButton} style={{top: 30}}>
           <TouchableOpacity onPress={goBack}>
-            <SVG />
+            <BackSVG />
           </TouchableOpacity>
         </View>
         <Formik

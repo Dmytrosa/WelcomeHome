@@ -1,215 +1,8 @@
-// import React, {useEffect, useState} from 'react';
-// import {
-//   View,
-//   Text,
-//   TextInput,
-//   Button,
-//   StyleSheet,
-//   TouchableOpacity,
-//   ScrollView,
-// } from 'react-native';
-// import {Picker} from '@react-native-picker/picker';
-// import {useNavigation} from '@react-navigation/native';
-
-// const StepCreate = () => {
-
-//   const [error, setError] = useState('');
-//   const [category, setCategory] = useState('');
-//   const [title, setTitle] = useState('');
-//   const [description, setDescription] = useState('');
-//   const [amount, setAmount] = useState('');
-
-//   const navigation = useNavigation();
-
-//   const handleSubmit = () => {
-//     if (!category || !title || !description || !amount) {
-//       setError("Будь ласка, заповніть всі обов'язкові поля.");
-//       return;
-//     }
-//     const formData = {
-//       category,
-//       title,
-//       description,
-//       amount,
-//     };
-//     console.log(formData); // Тут можна робити запит
-
-//     setCategory('');
-//     setTitle('');
-//     setDescription('');
-//     setAmount('');
-//   };
-
-//   const activityHandler = () => {
-//     // console.log(steps)
-//     navigation.navigate('ChouseStep');
-//   };
-
-//   return (
-//     <ScrollView>
-//       <View style={styles.container}>
-//         <Text style={styles.heading}>
-//           Оберіть необхідні поля та створіть нову виплату
-//         </Text>
-//         <View style={styles.pick}>
-//           <Picker
-//             style={styles.picker}
-//             selectedValue={category}
-//             onValueChange={value => setCategory(value)}>
-//             <Picker.Item label="Оберіть категорію" value="health" />
-//             <Picker.Item label="Здоров'я" value="health" />
-//             <Picker.Item label="Освіта" value="education" />
-//             <Picker.Item label="Соціальна підтримка" value="social_support" />
-//           </Picker>
-//         </View>
-//         <TextInput
-//           style={styles.input}
-//           placeholder="Назва"
-//           value={title}
-//           onChangeText={text => setTitle(text)}
-//         />
-//         <TextInput
-//           style={styles.input}
-//           placeholder="Опис"
-//           value={description}
-//           onChangeText={text => setDescription(text)}
-//         />
-//         <TextInput
-//           style={styles.input}
-//           placeholder="Сума виплати"
-//           value={amount}
-//           onChangeText={text => setAmount(text)}
-//           keyboardType="numeric"
-//         />
-//         {error ? <Text style={styles.error}>{error}</Text> : null}
-
-//         <View>
-//           <View>
-//             <View style={styles.submit}>
-//               <TouchableOpacity onPress={activityHandler}>
-//                 <Text style={styles.buttonSubmit}>Додати крок {'>'}</Text>
-//               </TouchableOpacity>
-//             </View>
-//           </View>
-//         </View>
-//         <View style={styles.submit}>
-//           <TouchableOpacity onPress={handleSubmit}>
-//             <Text style={styles.buttonSubmit}>Підтвердити</Text>
-//           </TouchableOpacity>
-//         </View>
-//       </View>
-//     </ScrollView>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     flexGrow: 1,
-//     padding: 20,
-//     backgroundColor: '#fff',
-//     minHeight: 790,
-//   },
-//   heading: {
-//     fontSize: 18,
-//     fontWeight: 'bold',
-//     marginBottom: 20,
-//     textAlign: 'center',
-//   },
-//   label: {
-//     fontSize: 21,
-//     marginTop: 5,
-//     marginBottom: 5,
-//     color: '#878787',
-//     fontWeight: '700',
-//     //     font: Inter,
-//     //     font-size: 18,
-//     // // font-style: normal;
-//     //     font-weight: "700",
-//     //     line-height: "150%"
-//   },
-//   submit: {
-//     // top: 200,
-//     left: 62,
-//     width: 250,
-//     height: 50,
-//     flexShrink: 0,
-//     backgroundColor: '#8EB0D2',
-//     display: 'flex',
-//     flexDirection: 'column',
-//     justifyContent: 'center',
-//     borderRadius: 14,
-//   },
-//   buttonSubmit: {
-//     fontSize: 17,
-//     paddingLeft: '30%',
-//     fontWeight: '600',
-//     color: '#ffffff',
-//   },
-//   addStep: {
-//     marginLeft: '16%',
-//     marginTop: -20,
-//     marginBottom: 20,
-//     width: 250,
-//     height: 50,
-//     flexShrink: 0,
-//     backgroundColor: '#8EB0D2',
-//     display: 'flex',
-//     flexDirection: 'column',
-//     justifyContent: 'center',
-//     borderRadius: 14,
-//   },
-//   buttonText: {
-//     fontSize: 17,
-//     paddingLeft: '13%',
-//     fontWeight: '600',
-//     color: '#ffffff',
-//   },
-//   pick: {
-//     backgroundColor: '#ffffff',
-//     borderWidth: 1,
-//     borderColor: 'white',
-//     borderRadius: 14,
-//     marginBottom: 30,
-//     elevation: 4,
-//     shadowColor: '#000000',
-//   },
-//   input: {
-//     elevation: 4,
-//     shadowColor: '#000000',
-//     borderRadius: 10,
-//     backgroundColor: '#FFF',
-//     width: '100%',
-//     height: 41,
-//     flexShrink: 0,
-//     borderColor: 'white',
-//     borderWidth: 1,
-//     marginBottom: 20,
-//     paddingLeft: 10,
-//   },
-//   picker: {
-//     width: '100%',
-//     height: 50,
-//     // backgroundColor: "gray",
-//     color: '#bababa', // текстовий колір
-//     fontSize: 16,
-//     borderRadius: 30,
-//   },
-//   error: {
-//     color: 'red',
-//     marginBottom: 15,
-//   },
-//   stepText: {
-//     marginBottom: 5,
-//   },
-// });
-
-// export default StepCreate;
-import { Picker } from '@react-native-picker/picker';
+import {Picker} from '@react-native-picker/picker';
 import React, {useEffect, useState} from 'react';
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import * as Yup from 'yup';
-import { transformToFormikErrors } from '../../../utils/form';
+import {transformToFormikErrors} from '../../../utils/form';
 
 import {
   View,
@@ -218,87 +11,79 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  ImageBackground,
 } from 'react-native';
-import { Path, Svg } from 'react-native-svg';
+import {Path, Svg} from 'react-native-svg';
+import {useNavigation} from '@react-navigation/native';
+import {BackSVG} from './ChooseOrg';
+import {cityGET} from 'app/services/services/city';
+import {volunteerOrg} from 'app/services/services/establishment';
 
-const OrganisationCreateSchema = Yup.object().shape({
+const CreateOrgSchema = Yup.object().shape({
   fullName: Yup.string().required("Це поле є обов'язковим"),
+  address: Yup.string().required("Це поле є обов'язковим"),
   phoneNumber: Yup.string().required("Це поле є обов'язковим"),
   website: Yup.string().url('Введіть коректне посилання'),
-  otherContacts: Yup.string(),
   city: Yup.string().required("Це поле є обов'язковим"),
+  otherContacts: Yup.string(),
 });
 
+const CreateOrg = () => {
+  const [city, setCity] = useState([]);
 
-const SVG = () => {
-  return (
-    <Svg width="10" height="16" viewBox="0 0 10 16" fill="none">
-      <Path
-        d="M8.5 15L1.5 8L8.5 1"
-        stroke="#101010"
-        stroke-width="1.66667"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </Svg>
-  );
-};
+  const navigation = useNavigation();
 
-
-
-const OrganisationCreate = () => {
-
-  const handleSubmit = (values, { setErrors, resetForm }) => {
-    try {
-      const formData = {
-        fullName: values.fullName,
-        phoneNumber: values.phoneNumber,
-        website: values.website,
-        otherContacts: values.otherContacts,
-        city: values.city,
-      };
-
-      console.log(formData); // Тут можна робити запит
-
-      resetForm();
-    } catch (error) {
-      if (error.response?.data?.errors) {
-        // Якщо є помилки на боці сервера, встановити їх в формі
-        let result = transformToFormikErrors(error.response.data.errors);
-        setErrors(result);
-      } else {
-        // Інакше встановити загальну помилку форми
-        setErrors({ error: error.message });
-      }
-    }
-  };
+  useEffect(() => {
+    const func = async () => {
+      const response: any = await cityGET();
+      debugger;
+      setCity(response);
+    };
+    func();
+  }, []);
 
   const goBack = () => {
-    // код для переходу назад
+    navigation.goBack();
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.backButton}>
+    <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+      <ImageBackground
+        source={require('../../../../assets/bgr_darkBlue_blue.png')}
+        resizeMode="cover"
+        style={styles.backgroundContainer}>
+        <View style={{top: 30}}>
           <TouchableOpacity onPress={goBack}>
-            сюда свг
+            <BackSVG />
           </TouchableOpacity>
         </View>
+
         <Text style={styles.heading}>
           Заповніть основну інформацію про волонтерську організацію:
         </Text>
         <Formik
           initialValues={{
             fullName: '',
+            address: '',
             phoneNumber: '',
             website: '',
             otherContacts: '',
-            city: 'Оберіть місто', 
+            city: 'Оберіть місто',
           }}
-          validationSchema={OrganisationCreateSchema}
-          onSubmit={handleSubmit}
-        >
+          validationSchema={CreateOrgSchema}
+          onSubmit={async (values, {setErrors, resetForm}) => {
+            const cityId = parseInt(values.city, 10);
+            const formData = {
+              name: values.fullName,
+              address: values.address,
+              phoneNumber: values.phoneNumber,
+              pageURL: values.website,
+              cityId: cityId,
+              otherContacts: values.otherContacts,
+            };
+            await volunteerOrg(formData);
+            goBack;
+          }}>
           {({
             handleChange,
             handleBlur,
@@ -308,58 +93,85 @@ const OrganisationCreate = () => {
             touched,
           }) => (
             <View>
-              <Text style={styles.smallLabel}>Повна назва</Text>
-              <TextInput
-                style={styles.input}
-                placeholder=""
-                onChangeText={handleChange('fullName')}
-                onBlur={handleBlur('fullName')}
-                value={values.fullName}
-              />
-              {errors.fullName && touched.fullName && <Text style={styles.error}>{errors.fullName}</Text>}
-
-              <Text style={styles.smallLabel}>Номер телефону</Text>
-              <TextInput
-                style={styles.input}
-                placeholder=""
-                onChangeText={handleChange('phoneNumber')}
-                onBlur={handleBlur('phoneNumber')}
-                value={values.phoneNumber}
-              />
-              {errors.phoneNumber && touched.phoneNumber && <Text style={styles.error}>{errors.phoneNumber}</Text>}
-
-              <Text style={styles.smallLabel}>Посилання на сайт / соц. мережі</Text>
-              <TextInput
-                style={styles.input}
-                placeholder=""
-                onChangeText={handleChange('website')}
-                onBlur={handleBlur('website')}
-                value={values.website}
-              />
-              {errors.website && touched.website && <Text style={styles.error}>{errors.website}</Text>}
-
-              <Text style={styles.smallLabel}>Інші контакти</Text>
-              <TextInput
-                style={styles.input}
-                placeholder=""
-                onChangeText={handleChange('otherContacts')}
-                onBlur={handleBlur('otherContacts')}
-                value={values.otherContacts}
-              />
-
-              <Text style={styles.smallLabel}>Місто</Text>
-              <Picker
-                style={styles.input}
-                selectedValue={values.city}
-                onValueChange={value => handleChange('city')(value)}
-              >
-                <Picker.Item label="Оберіть зі списку" value="" />
-                <Picker.Item label="ЦНАП" value="tsnap" />
-                <Picker.Item label="Лікарня" value="hospital" />
-                <Picker.Item label="Соціальна підтримка" value="social_support" />
-              </Picker>
-
-              {errors.city && touched.city && <Text style={styles.error}>{errors.city}</Text>}
+              <View style={styles.centered}>
+                <Text style={styles.smallLabel}>Повна назва</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="ЦНАП"
+                  onChangeText={handleChange('fullName')}
+                  onBlur={handleBlur('fullName')}
+                  value={values.fullName}
+                />
+              </View>
+              {errors.fullName && touched.fullName && (
+                <Text style={styles.error}>{errors.fullName}</Text>
+              )}
+              <View style={styles.centered}>
+                <Text style={styles.smallLabel}>Адреса</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="address"
+                  onChangeText={handleChange('address')}
+                  onBlur={handleBlur('address')}
+                  value={values.address}
+                />
+              </View>
+              {errors.address && touched.address && (
+                <Text style={styles.error}>{errors.address}</Text>
+              )}
+              <View style={styles.centered}>
+                <Text style={styles.smallLabel}>Номер телефону</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="+38"
+                  onChangeText={handleChange('phoneNumber')}
+                  onBlur={handleBlur('phoneNumber')}
+                  value={values.phoneNumber}
+                />
+              </View>
+              {errors.phoneNumber && touched.phoneNumber && (
+                <Text style={styles.error}>{errors.phoneNumber}</Text>
+              )}
+              <View style={styles.centered}>
+                <Text style={styles.smallLabel}>
+                  Посилання на сайт / соціальні мережі
+                </Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="https://www.youraccountlink.com/"
+                  onChangeText={handleChange('website')}
+                  onBlur={handleBlur('website')}
+                  value={values.website}
+                />
+              </View>
+              {errors.website && touched.website && (
+                <Text style={styles.error}>{errors.website}</Text>
+              )}
+              <View style={styles.centered}>
+                <Text style={styles.smallLabel}>Інші контакти</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder=""
+                  onChangeText={handleChange('otherContacts')}
+                  onBlur={handleBlur('otherContacts')}
+                  value={values.otherContacts}
+                />
+              </View>
+              <View style={styles.centered}>
+                <Text style={styles.smallLabel}>Місто</Text>
+                <Picker
+                  style={styles.input}
+                  selectedValue={values.city}
+                  onValueChange={value => handleChange('city')(value)}>
+                  <Picker.Item label="Виберіть зі списку" value="-1" />
+                  {city.map(item => {
+                    <Picker.Item label={item.name} value={item.id} />;
+                  })}
+                </Picker>
+              </View>
+              {errors.city && touched.city && (
+                <Text style={styles.error}>{errors.city}</Text>
+              )}
               {errors.error && <Text style={styles.error}>{errors.error}</Text>}
 
               <TouchableOpacity style={styles.submit} onPress={handleSubmit}>
@@ -368,87 +180,118 @@ const OrganisationCreate = () => {
             </View>
           )}
         </Formik>
-      </View>
+      </ImageBackground>
     </ScrollView>
   );
 };
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexGrow: 1,
-    padding: 20,
-    backgroundColor: '#E5EFFB',
-    minHeight: 790,
-  },
-  heading: {
+  login: {
+    fontSize: 15,
+    top: '50%',
+    fontWeight: '600',
+    textDecorationLine: 'underline',
     color: 'black',
-    fontSize: 20,
-    fontWeight: '700',
-    textAlign: 'center',
-    marginBottom: 30,
-    marginTop:30,
   },
-  smallLabel: {
-    color: '#878787',
-    fontSize: 14,
-    fontStyle: 'normal',
-    fontWeight: "600",
-    lineHeight: 27,
-    marginBottom: 0
-  },
-  submit: {
-    top: 200,
-    left: 'auto',
-    width: 'auto',
+  backButton: {
+    left: -5,
+    top: -5,
+    width: 50,
     height: 50,
     flexShrink: 0,
-    backgroundColor: '#8EB0D2',
+    backgroundColor: '#FFFFFF',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 14,
   },
+  scrollViewContainer: {
+    flexGrow: 1,
+    marginTop: -20,
+  },
+  backgroundContainer: {
+    padding: 20,
+    flex: 1,
+    flexGrow: 1,
+  },
+  centered: {
+    flex: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  heading: {
+    color: 'black',
+    fontSize: 23,
+    fontWeight: '800',
+    wordWrap: 'break-word',
+    textAlign: 'center',
+    marginBottom: 30,
+    marginTop: 50,
+  },
+  smallLabel: {
+    width: '92%',
+    color: '#130F26',
+    fontSize: 15,
+    fontStyle: 'normal',
+    fontWeight: '600',
+    lineHeight: 27,
+    marginLeft: 16,
+    marginBottom: 0,
+  },
+  submit: {
+    top: 10,
+    width: '80%',
+    height: 54,
+    flexShrink: 0,
+    backgroundColor: '#01161E',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    borderRadius: 30,
+  },
   add: {
-    width:41,
+    width: 41,
     height: 41,
     backgroundColor: '#FFFFFF',
     color: 'gray',
     fontSize: 29,
-    fontWeight:'bold',
+    fontWeight: 'bold',
     textAlign: 'center',
     position: 'absolute',
-    top:27,
+    top: 27,
     left: 273,
-    paddingTop:4,
+    paddingTop: 4,
     borderRadius: 10,
     // boxShadow: '0px 4px 15px 0px rgba(0, 0, 0, 0.10)',
   },
   buttonText: {
-    fontSize: 17,
+    fontSize: 21,
     textAlign: 'center',
     fontWeight: '600',
     color: '#ffffff',
   },
   input: {
-    width: '100%',
+    elevation: 5,
+    shadowColor: 'gray',
+    width: '95%',
     height: 41,
     flexShrink: 0,
     borderColor: 'white',
     borderWidth: 1,
-    marginBottom: 5,
-    paddingLeft: 10,
-    borderRadius: 10,
+    marginBottom: 20,
+    paddingLeft: 15,
+    borderRadius: 20,
     backgroundColor: 'white',
-    // boxShadow: '0px 4px 15px 0px rgba(0, 0, 0, 0.10)',
-    // display: 'inline'
   },
   linkText: {
+    width: '92%',
+    marginLeft: 16,
     color: '#130F26',
-    fontSize: 14,
+    marginTop: 3,
+    fontSize: 15,
     fontWeight: '700',
     textDecorationLine: 'underline',
-    wordWrap: 'break-word',
-    marginTop:0,
   },
   estInput: {
     width: '84%',
@@ -473,10 +316,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 10,
     marginLeft: 0,
-    marginTop:0,
-    width:'100%',
+    marginTop: 0,
+    width: '100%',
     justifyContent: 'space-between',
+  },
+  errorText: {
+    color: 'red',
+    marginTop: -13,
+    marginBottom: 7,
   },
 });
 
-export default OrganisationCreate;
+export default CreateOrg;

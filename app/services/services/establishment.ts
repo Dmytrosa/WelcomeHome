@@ -51,3 +51,9 @@ export const establishment = async (body: any) => {
     const response =  await executeRequest( 'POST' , `${routes.establishmentVolonteer}`, {body});
     if (response.status == 200 )return response.data
   };
+
+  export const volunteerOrg = async (body: any) => {
+    const response =  await executeRequest( 'POST' , `${routes.volunteerOrganisation}`, {body});
+    if (response.status == 200 )return response.data
+  };
+  

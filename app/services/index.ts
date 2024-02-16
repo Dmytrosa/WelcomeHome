@@ -8,7 +8,7 @@ const contentTypes: any = {
   mfd: 'multipart/form-data',
 };
 
-const executeRequest = async (
+export const executeRequest = async (
   method: Method,
   route: string,
   {
@@ -57,8 +57,8 @@ const executeRequest = async (
   });
 };
 
-const routes = {
-  login: 'Auth/Login',
+export const routes = {
+  loginisation: 'Auth/Login',
   register: 'Auth/Register',
   registerVolonteer: 'Auth/RegisterVolunteer',
   refresh: 'Auth/Refresh',
@@ -88,10 +88,9 @@ const routes = {
   userCategory: 'UserCategory',
   volunteerId: 'Volunteer/{id}',
   volunteer: 'Volunteer',
+  volunteerOrganisation: 'Volunteer/organisation',
   eventId: 'Event/{id}',
   event: 'Event',
 };
 
-export {routes, executeRequest};
-export {login} from './services/auth';
-// export {getPayments} from './services/payment';
+// export {routes, executeRequest};

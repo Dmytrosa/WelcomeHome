@@ -29,6 +29,7 @@ import StepCreate from '../screens/Payments/PaymentCreate/CreateStep';
 import UserRegister from '../screens/auth/UserRegister';
 import VolonteerRegister from '../screens/auth/volonteer/VolonteerRegister';
 import FlashScreen from '../screens/auth/assets/FlashScreen';
+import ChooseOrg from 'app/screens/auth/volonteer/ChooseOrg';
 
 const accIcon = ({color}: {color: ColorValue | number}) => (
   <Icon name="person-outline" size={30} color={color} />
@@ -101,6 +102,20 @@ function AuthTEST() {
       <Stack.Screen
         name="ChooseRole"
         component={ChooseRole}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ChooseOrg"
+        component={ChooseOrg}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="CreateOrg"
+        component={CreateOrg}
         options={{
           headerShown: false,
         }}

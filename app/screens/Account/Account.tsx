@@ -30,6 +30,7 @@ const Account = props => {
       style={styles.backgroundContainer}>
       {/* <StatusBar backgroundColor="#C9D8E5" barStyle="light-content" /> */}
       <AccHeader name={data.name} email={data.email} />
+
       <Text style={styles.text}>Додаткові можливості</Text>
       <View style={styles.card}>
         <View style={styles.textContainer}>

@@ -20,6 +20,7 @@ import {registerVolonteer} from '../../../services/services/auth';
 import {useDispatch} from 'react-redux';
 import {updateUser} from '../../../store/userSlice';
 import {setSecureValue} from '../../../utils/keyChain';
+import { BackSVG } from './ChooseOrg';
 
 const VolonteerRegisterSchema = Yup.object().shape({
   fullName: Yup.string().required("Це поле є обов'язковим"),
@@ -37,19 +38,6 @@ const VolonteerRegisterSchema = Yup.object().shape({
   organization: Yup.string().required("Це поле є обов'язковим"),
 });
 
-const SVG = () => {
-  return (
-    <Svg width="25" height="25" viewBox="0 0 10 16" fill="none">
-      <Path
-        d="M8.5 15L1.5 8L8.5 1"
-        stroke="#101010"
-        stroke-width="1.66667"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </Svg>
-  );
-};
 
 const VolonteerRegister = () => {
   const [error, setError] = useState('');
@@ -67,10 +55,11 @@ const VolonteerRegister = () => {
       <ImageBackground
         source={require('../../../../assets/bgr_darkBlue_blue.png')}
         resizeMode="cover"
-        style={styles.backgroundContainer}>
+        style={styles.backgroundContainer}
+        >
         <View style={{top: 30}}>
           <TouchableOpacity onPress={goBack}>
-            <SVG />
+            <BackSVG />
           </TouchableOpacity>
         </View>
 
@@ -87,30 +76,30 @@ const VolonteerRegister = () => {
           }}
           validationSchema={VolonteerRegisterSchema}
           onSubmit={(values, {setErrors, resetForm}) => {
-            const organizationNumber = parseInt(values.organization, 10);
-            const {confirmPassword, ...newValues} = {
-              ...values,
-              organization: organizationNumber,
-            };
-
-            const transformedObject = {
-              fullName: newValues.fullName,
-              phoneNumber: newValues.phone,
-              email: newValues.email,
-              socialUrl: newValues.socialMediaLink,
-              establishmentId: newValues.organization,
-              password: newValues.password,
-            };
-            const func = async () => {
-              const response: any = await registerVolonteer(transformedObject);
-              const {accessToken, role, userId, userName, email} = response;
-              dispatch(
-                updateUser({accessToken, role, userId, userName, email}),
-              );
-              setSecureValue('token', accessToken);
-              navigation.navigate('ChooseRole', {name: userName});
-            };
-            func();
+            // const organizationNumber = parseInt(values.organization, 10);
+            // const {confirmPassword, ...newValues} = {
+              // ...values,
+              // organization: organizationNumber,
+            // };
+            debugger
+            // const transformedObject = {
+            //   fullName: newValues.fullName,
+            //   phoneNumber: newValues.phone,
+            //   email: newValues.email,
+            //   socialUrl: newValues.socialMediaLink,
+            //   establishmentId: newValues.organization,
+            //   password: newValues.password,
+            // };
+            // const func = async () => {
+            //   const response: any = await registerVolonteer(transformedObject);
+            //   const {accessToken, role, userId, userName, email} = response;
+            //   dispatch(
+            //     updateUser({accessToken, role, userId, userName, email}),
+            //   );
+            //   setSecureValue('token', accessToken);
+              navigation.navigate('ChooseOrg', {values: values});
+            // };
+            // func();
           }}>
           {({
             handleChange,
@@ -120,7 +109,7 @@ const VolonteerRegister = () => {
             errors,
             touched,
           }) => (
-            <>
+            <View>
               <View>
                 <Text style={styles.smallLabel}>Повне ім'я (ПІБ)</Text>
                 <TextInput
@@ -134,7 +123,6 @@ const VolonteerRegister = () => {
                   <Text style={styles.errorText}>{errors.fullName}</Text>
                 )}
               </View>
-
               <View style={styles.centered}>
                 <Text style={styles.smallLabel}>Номер телефону</Text>
                 <TextInput
@@ -148,7 +136,6 @@ const VolonteerRegister = () => {
                   <Text style={styles.errorText}>{errors.phone}</Text>
                 )}
               </View>
-
               <View style={styles.centered}>
                 <Text style={styles.smallLabel}>Електронна пошта</Text>
                 <TextInput
@@ -162,19 +149,6 @@ const VolonteerRegister = () => {
                   <Text style={styles.errorText}>{errors.email}</Text>
                 )}
               </View>
-
-              {/*
-              <View style={styles.centered}>
-                <Text style={styles.smallLabel}>Посилання на соц. мережі</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder=""
-                  onChangeText={handleChange('socialMediaLink')}
-                  onBlur={handleBlur('socialMediaLink')}
-                  value={values.socialMediaLink}
-                />
-              </View>
-                */}
               <View style={styles.centered}>
                 <Text style={styles.smallLabel}>Пароль</Text>
                 <TextInput
@@ -203,28 +177,7 @@ const VolonteerRegister = () => {
                   <Text style={styles.errorText}>{errors.confirmPassword}</Text>
                 )}
               </View>
-              {/*
-              <View style={styles.centered}>
-                <Text style={styles.smallLabel}>Волонтерська організація</Text>
-                <View style={styles.establishment}>
-                  <Picker
-                    style={styles.estInput}
-                    selectedValue={values.organization}
-                    onValueChange={value =>
-                      handleChange('organization')(value)
-                    }>
-                    <Picker.Item label="Оберіть зі списку" value="0" />
-                    <Picker.Item label="ЦНАП" value="1" />
-                    <Picker.Item label="Лікарня" value="2" />
-                    <Picker.Item label="Соціальна підтримка" value="3" />
-                  </Picker>
-                </View>
-              </View>
-                  */}
               {error ? <Text style={styles.errorText}>{error}</Text> : null}
-
-             
-
               <View style={styles.centered}>
                 <TouchableOpacity onPress={handleSubmit} style={styles.submit}>
                   <Text style={styles.buttonText}>Далі</Text>
@@ -233,7 +186,6 @@ const VolonteerRegister = () => {
                 <Text style={styles.linkText}>Вже зареєстровані? Увійти</Text>
               </View>
               </View>
-              
             </View>
           )}
         </Formik>

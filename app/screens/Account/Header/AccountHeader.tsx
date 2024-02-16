@@ -34,7 +34,7 @@ export {AccHeader};
 
 const styles = StyleSheet.create({
   mainContainer: {
-    height: 180,
+    height: 160,
   },
   container: {
     marginTop: 30,

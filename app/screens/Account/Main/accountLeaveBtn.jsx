@@ -30,15 +30,16 @@ const styles = StyleSheet.create({
     // position: 'absolute',
     width: '50%',
     // height: 58,
-    top: '800%',
+    top: '700%',
     // right: 40,
 
     color: 'rgb(19, 15, 38)',
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: '600',
     lineHeight: 30,
     textAlign: 'center',
     zIndex: 41,
-    borderBottomWidth: 2,
+    textDecorationLine: 'underline'
+    // borderBottomWidth: 1,
   },
 });

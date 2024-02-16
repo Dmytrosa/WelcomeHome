@@ -16,7 +16,6 @@ axios.interceptors.request.use(
 // Add a response interceptor
 axios.interceptors.response.use(
   function (response) {
-    
     return response;
   },
   function (error) {

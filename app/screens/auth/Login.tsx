@@ -2,8 +2,6 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-  Button,
-  Image,
   ScrollView,
   TouchableOpacity,
   Text,
@@ -12,23 +10,17 @@ import {
 } from 'react-native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {routes, get} from '../../services/index';
 
 import Layout from '../../components/Layout';
-import Card from '../../components/Card';
-import {Input} from '../../components/Form';
-const AppIcon = require('../../assets/images//appicon.png');
 
 import {useDispatch} from 'react-redux';
 import {updateUser} from '../../store/userSlice';
-
+ 
 import {login} from '../../services/services/auth';
 import {setSecureValue} from '../../utils/keyChain';
 import {transformToFormikErrors} from '../../utils/form';
 import {useNavigation} from '@react-navigation/native';
 import {Path, Svg} from 'react-native-svg';
-import axios, {AxiosRequestHeaders} from 'axios';
-import {env} from '../../assets/constants';
 
 interface ValuesType {
   email: string;
@@ -68,38 +60,38 @@ const Login = () => {
 
   const handleLogin = (values: ValuesType, {setErrors}: any) => {
     async function fetchData() {
+
       const transformedObject = {
         email: values.email,
         password: values.password,
       };
-
       const response: any = await login(transformedObject);
-
       const {accessToken, role, userId, userName, email} = response;
+      
       dispatch(updateUser({accessToken, role, userId, userName, email}));
       setSecureValue('token', accessToken);
       navigation.navigate('FlashScreen', {name: userName});
     }
     fetchData();
 
-    login(values);
-    let reqObj: any = Object.assign({}, values);
-    // Service request
-    login(new URLSearchParams(reqObj))
-      .then(res => {
-        if (res.data?.user?.access_token) {
-          const {name, email, access_token, refresh_token} = res.data.user;
-          dispatch(updateUser({name, email, token: access_token}));
-          setSecureValue('token', access_token);
-          setSecureValue('refresh_token', refresh_token);
-        }
-      })
-      .catch(e => {
-        if (e.response?.data?.errors) {
-          let result = transformToFormikErrors(e.response.data.errors);
-          setErrors(result);
-        }
-      });
+    // login(values);
+    // let reqObj: any = Object.assign({}, values);
+    // // Service request
+    // login(new URLSearchParams(reqObj))
+    //   .then(res => {
+    //     if (res.data?.user?.access_token) {
+    //       const {name, email, access_token, refresh_token} = res.data.user;
+    //       dispatch(updateUser({name, email, token: access_token}));
+    //       setSecureValue('token', access_token);
+    //       setSecureValue('refresh_token', refresh_token);
+    //     }
+    //   })
+    //   .catch(e => {
+    //     if (e.response?.data?.errors) {
+    //       let result = transformToFormikErrors(e.response.data.errors);
+    //       setErrors(result);
+    //     }
+    //   });
   };
 
   const navigator = useNavigation();
@@ -149,9 +141,9 @@ const Login = () => {
                     <Text style={styles.smallLabel}>Електронна пошта</Text>
                     <TextInput
                       style={styles.input}
-                      placeholder="+38"
-                      onChangeText={handleChange('phoneNumber')}
-                      onBlur={handleBlur('phoneNumber')}
+                      placeholder="example@mail.welhome"
+                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('email')}
                       value={values.email}
                     />
                     {errors.email && touched.email && (
@@ -162,9 +154,9 @@ const Login = () => {
                     <Text style={styles.smallLabel}>Пароль</Text>
                     <TextInput
                       style={styles.input}
-                      placeholder="+38"
-                      onChangeText={handleChange('phoneNumber')}
-                      onBlur={handleBlur('phoneNumber')}
+                      placeholder="exampleA0"
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
                       value={values.password}
                     />
                     {errors.password && touched.password && (

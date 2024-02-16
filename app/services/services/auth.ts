@@ -1,7 +1,9 @@
-import {routes, executeRequest} from '../index';
+import { executeRequest, routes } from "..";
 
 export const login = async (body: any) => {
-  const response =  await executeRequest( 'POST' , `${routes.login}`, {body});
+  
+  const response =  await executeRequest( 'POST' , `${routes.loginisation}`, {body});
+  
   const email = body.email
   return {...response.data, email}
 };
@@ -19,6 +21,11 @@ export const register = async(body: any) => {
     sumresp = await login(loginObj)
   }
   return sumresp
+};
+export const establishmentForVols = async () => {
+  const params = {EstablishmentTypeId: 1, CityId: null}
+  const response =  await executeRequest( 'GET' , `${routes.establishment}`, {params});
+  if (response.status == 200 )return response.data
 };
 
 export const registerVolonteer = async (body: any) => {
