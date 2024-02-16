@@ -23,7 +23,7 @@ const AccHeader = props => {
       <View style={styles.container}>
         <View>
           <Text style={styles.stepanBandera}>{props.name}</Text>
-          <Text style={styles.phoneNumber}>{props.email}</Text>
+          <Text style={styles.phoneNumber}>{props.phoneNumber}</Text>
         </View>
         <Settings />
       </View>

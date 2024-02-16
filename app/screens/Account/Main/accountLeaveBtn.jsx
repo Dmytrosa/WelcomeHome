@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     // right: 40,
 
     color: 'rgb(19, 15, 38)',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '600',
     lineHeight: 30,
     textAlign: 'center',

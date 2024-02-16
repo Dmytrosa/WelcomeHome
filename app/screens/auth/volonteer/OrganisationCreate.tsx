@@ -16,8 +16,8 @@ import {
 import {Path, Svg} from 'react-native-svg';
 import {useNavigation} from '@react-navigation/native';
 import {BackSVG} from './ChooseOrg';
-import {cityGET} from 'app/services/services/city';
-import {volunteerOrg} from 'app/services/services/establishment';
+import {cityGET} from '../../../services/services/city';
+import {volunteerOrg} from '../../../services/services/establishment';
 
 const CreateOrgSchema = Yup.object().shape({
   fullName: Yup.string().required("Це поле є обов'язковим"),

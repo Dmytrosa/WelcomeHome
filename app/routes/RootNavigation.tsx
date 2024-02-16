@@ -29,7 +29,7 @@ import StepCreate from '../screens/Payments/PaymentCreate/CreateStep';
 import UserRegister from '../screens/auth/UserRegister';
 import VolonteerRegister from '../screens/auth/volonteer/VolonteerRegister';
 import FlashScreen from '../screens/auth/assets/FlashScreen';
-import ChooseOrg from 'app/screens/auth/volonteer/ChooseOrg';
+import ChooseOrg from '../screens/auth/volonteer/ChooseOrg';
 
 const accIcon = ({color}: {color: ColorValue | number}) => (
   <Icon name="person-outline" size={30} color={color} />
@@ -247,6 +247,15 @@ export default function RootNavigation() {
             headerTitleStyle: {color: theme.color, fontSize: 16},
           }}>
           <Tab.Screen
+            name="Payments"
+            component={PaymentsStack}
+            options={{
+              tabBarIcon: paymentsIcon,
+              headerShown: false,
+              tabBarLabel: 'Виплати',
+            }}
+          />
+          <Tab.Screen
             name="AuthTEST"
             component={AuthTEST}
             options={{
@@ -254,15 +263,6 @@ export default function RootNavigation() {
               headerShown: false,
               tabBarLabel: '',
               tabBarVisible: false,
-            }}
-          />
-          <Tab.Screen
-            name="Payments"
-            component={PaymentsStack}
-            options={{
-              tabBarIcon: paymentsIcon,
-              headerShown: false,
-              tabBarLabel: 'Виплати',
             }}
           />
           <Tab.Screen

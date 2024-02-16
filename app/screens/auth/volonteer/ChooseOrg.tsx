@@ -23,7 +23,7 @@ import {
 import {useDispatch} from 'react-redux';
 import {updateUser} from '../../../store/userSlice';
 import {setSecureValue} from '../../../utils/keyChain';
-import { SvgAdd } from 'app/screens/Payments/Payments';
+import { SvgAdd } from '../../../screens/Payments/Payments';
 
 const ChooseOrgSchema = Yup.object().shape({
   socialMediaLink: Yup.string().required("Це поле є обов'язковим"),
