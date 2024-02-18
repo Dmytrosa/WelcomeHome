@@ -139,7 +139,7 @@ const UserRegister = () => {
                 <Text style={styles.smallLabel}>Пароль</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="********"
+                  placeholder="exampleA0"
                   onChangeText={handleChange('password')}
                   onBlur={handleBlur('password')}
                   value={values.password}
@@ -154,7 +154,7 @@ const UserRegister = () => {
                 <Text style={styles.smallLabel}>Підтвердіть пароль</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="********"
+                  placeholder="exampleA0"
                   onChangeText={handleChange('confirmPassword')}
                   onBlur={handleBlur('confirmPassword')}
                   value={values.confirmPassword}

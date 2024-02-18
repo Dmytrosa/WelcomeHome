@@ -30,6 +30,7 @@ import UserRegister from '../screens/auth/UserRegister';
 import VolonteerRegister from '../screens/auth/volonteer/VolonteerRegister';
 import FlashScreen from '../screens/auth/assets/FlashScreen';
 import ChooseOrg from '../screens/auth/volonteer/ChooseOrg';
+import CreateOrg from '../screens/auth/volonteer/OrganisationCreate';
 
 const accIcon = ({color}: {color: ColorValue | number}) => (
   <Icon name="person-outline" size={30} color={color} />

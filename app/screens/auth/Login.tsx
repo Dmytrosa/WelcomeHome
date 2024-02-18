@@ -73,25 +73,6 @@ const Login = () => {
       navigation.navigate('FlashScreen', {name: userName});
     }
     fetchData();
-
-    // login(values);
-    // let reqObj: any = Object.assign({}, values);
-    // // Service request
-    // login(new URLSearchParams(reqObj))
-    //   .then(res => {
-    //     if (res.data?.user?.access_token) {
-    //       const {name, email, access_token, refresh_token} = res.data.user;
-    //       dispatch(updateUser({name, email, token: access_token}));
-    //       setSecureValue('token', access_token);
-    //       setSecureValue('refresh_token', refresh_token);
-    //     }
-    //   })
-    //   .catch(e => {
-    //     if (e.response?.data?.errors) {
-    //       let result = transformToFormikErrors(e.response.data.errors);
-    //       setErrors(result);
-    //     }
-    //   });
   };
 
   const navigator = useNavigation();

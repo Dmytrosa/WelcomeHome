@@ -1,9 +1,6 @@
-import {Picker} from '@react-native-picker/picker';
 import React, {useEffect, useState} from 'react';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {transformToFormikErrors} from '../../../utils/form';
-
 import {
   View,
   Text,
@@ -13,30 +10,30 @@ import {
   ScrollView,
   ImageBackground,
 } from 'react-native';
-import {Path, Svg} from 'react-native-svg';
 import {useNavigation} from '@react-navigation/native';
 import {BackSVG} from './ChooseOrg';
 import {cityGET} from '../../../services/services/city';
 import {volunteerOrg} from '../../../services/services/establishment';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const CreateOrgSchema = Yup.object().shape({
   fullName: Yup.string().required("Це поле є обов'язковим"),
   address: Yup.string().required("Це поле є обов'язковим"),
   phoneNumber: Yup.string().required("Це поле є обов'язковим"),
   website: Yup.string().url('Введіть коректне посилання'),
-  city: Yup.string().required("Це поле є обов'язковим"),
   otherContacts: Yup.string(),
 });
 
 const CreateOrg = () => {
   const [city, setCity] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
 
   const navigation = useNavigation();
 
   useEffect(() => {
     const func = async () => {
       const response: any = await cityGET();
-      debugger;
       setCity(response);
     };
     func();
@@ -46,6 +43,8 @@ const CreateOrg = () => {
     navigation.goBack();
   };
 
+
+   
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <ImageBackground
@@ -68,22 +67,23 @@ const CreateOrg = () => {
             phoneNumber: '',
             website: '',
             otherContacts: '',
-            city: 'Оберіть місто',
           }}
           validationSchema={CreateOrgSchema}
-          onSubmit={async (values, {setErrors, resetForm}) => {
-            const cityId = parseInt(values.city, 10);
+          onSubmit={
+            async (values) => {
             const formData = {
               name: values.fullName,
               address: values.address,
-              phoneNumber: values.phoneNumber,
               pageURL: values.website,
-              cityId: cityId,
+              phoneNumber: values.phoneNumber,
               otherContacts: values.otherContacts,
+              cityId: value,
             };
             await volunteerOrg(formData);
-            goBack;
-          }}>
+            goBack()
+          }
+        }
+          >
           {({
             handleChange,
             handleBlur,
@@ -159,7 +159,7 @@ const CreateOrg = () => {
               </View>
               <View style={styles.centered}>
                 <Text style={styles.smallLabel}>Місто</Text>
-                <Picker
+                {/* <Picker
                   style={styles.input}
                   selectedValue={values.city}
                   onValueChange={value => handleChange('city')(value)}>
@@ -167,14 +167,25 @@ const CreateOrg = () => {
                   {city.map(item => {
                     <Picker.Item label={item.name} value={item.id} />;
                   })}
-                </Picker>
-              </View>
-              {errors.city && touched.city && (
-                <Text style={styles.error}>{errors.city}</Text>
-              )}
-              {errors.error && <Text style={styles.error}>{errors.error}</Text>}
+                </Picker> */}
+                <DropDownPicker
+                  style={[styles.input, {left: 10}]}
+                  open={open}
+                  value={value}
+                  items={city.map(item => ({
+                    
+                    label: item.name,
+                    value: item.id,
+                  }))}
+                  setOpen={setOpen}
+                  setValue={setValue}
+                  setItems={setCity}
+                />
+                </View>
 
-              <TouchableOpacity style={styles.submit} onPress={handleSubmit}>
+              {/* {errors.error && <Text style={styles.error}>{errors.error}</Text>} */}
+
+              <TouchableOpacity style={[styles.submit, styles.centered]} onPress={handleSubmit}>
                 <Text style={styles.buttonText}>Додати</Text>
               </TouchableOpacity>
             </View>
@@ -240,13 +251,14 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   submit: {
+    left: 30,
     top: 10,
     width: '80%',
     height: 54,
-    flexShrink: 0,
+    // flexShrink: 0,
     backgroundColor: '#01161E',
-    display: 'flex',
-    flexDirection: 'column',
+    // display: 'flex',
+    // flexDirection: 'column',
     justifyContent: 'center',
     borderRadius: 30,
   },
@@ -276,7 +288,7 @@ const styles = StyleSheet.create({
     shadowColor: 'gray',
     width: '95%',
     height: 41,
-    flexShrink: 0,
+    // flexShrink: 0,
     borderColor: 'white',
     borderWidth: 1,
     marginBottom: 20,

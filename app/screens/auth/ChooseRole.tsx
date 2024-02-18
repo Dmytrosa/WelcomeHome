@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
   backgroundContainer: {
     flex: 1,
     flexGrow: 1,
-    padding: 20,
     justifyContent: 'center',
   },
   logo: {},
@@ -77,7 +76,6 @@ const styles = StyleSheet.create({
     height: 230,
     marginBottom: 65,
     marginLeft: '14%',
-    // padding: 20,
     borderRadius: 20,
     backgroundColor: 'white',
     alignItems: 'center',

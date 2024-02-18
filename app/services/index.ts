@@ -16,14 +16,16 @@ export const executeRequest = async (
     type = '',
     user = {},
     params = {},
+    queryParams = {},
   }: {
     body: any;
     type: string;
     user: any;
     params?: Record<string, string | number>;
+    queryParams?: Record<string, string | number>;
   },
 ) => {
-  let headers: AxiosRequestHeaders = {Accept: 'application/json'};
+  let headers: AxiosRequestHeaders = { Accept: 'application/json' };
   if (user.token) {
     headers.Authorization = `bearer ${user.token}`;
   }
@@ -39,12 +41,18 @@ export const executeRequest = async (
     });
   }
 
-  
+  let queryParamsString = '';
+  if (queryParams) {
+    const queryParamKeys = Object.keys(queryParams);
+    if (queryParamKeys.length > 0) {
+      queryParamsString = '?' + queryParamKeys.map(key => `${key}=${queryParams[key]}`).join('&');
+    }
+  }
 
-  if(body){
+  if (body) {
     return apiClient({
       method: method,
-      url: `${BASE_URL}/${dynamicRoute}`,
+      url: `${BASE_URL}/${dynamicRoute}${queryParamsString}`,
       headers: headers,
       data: body,
     });
@@ -52,10 +60,11 @@ export const executeRequest = async (
 
   return apiClient({
     method: method,
-    url: `${BASE_URL}/${dynamicRoute}`,
+    url: `${BASE_URL}/${dynamicRoute}${queryParamsString}`,
     headers: headers,
   });
 };
+
 
 export const routes = {
   loginisation: 'Auth/Login',
@@ -88,7 +97,7 @@ export const routes = {
   userCategory: 'UserCategory',
   volunteerId: 'Volunteer/{id}',
   volunteer: 'Volunteer',
-  volunteerOrganisation: 'Volunteer/organisation',
+  volunteerOrganization: 'Volunteer/organization',
   eventId: 'Event/{id}',
   event: 'Event',
 };

@@ -53,7 +53,7 @@ export const establishment = async (body: any) => {
   };
 
   export const volunteerOrg = async (body: any) => {
-    const response =  await executeRequest( 'POST' , `${routes.volunteerOrganisation}`, {body});
-    if (response.status == 200 )return response.data
+    const response =  await executeRequest( 'POST' , `${routes.volunteerOrganization}`, {body});
+    if (response.status == 204 )return response.status
   };
   

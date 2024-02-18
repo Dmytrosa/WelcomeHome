@@ -50,6 +50,10 @@ const VolonteerRegister = () => {
   };
   const dispatch = useDispatch();
 
+  const handleLogic = (values) => {
+      navigation.navigate('ChooseOrg', {values: values});
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <ImageBackground
@@ -69,38 +73,12 @@ const VolonteerRegister = () => {
             fullName: '',
             phone: '',
             email: '',
-            socialMediaLink: '',
+            socialMediaLink: '/',
             password: '',
-            confirmPassword: '',
-            organization: '',
+            organization: '1',
           }}
           validationSchema={VolonteerRegisterSchema}
-          onSubmit={(values, {setErrors, resetForm}) => {
-            // const organizationNumber = parseInt(values.organization, 10);
-            // const {confirmPassword, ...newValues} = {
-              // ...values,
-              // organization: organizationNumber,
-            // };
-            debugger
-            // const transformedObject = {
-            //   fullName: newValues.fullName,
-            //   phoneNumber: newValues.phone,
-            //   email: newValues.email,
-            //   socialUrl: newValues.socialMediaLink,
-            //   establishmentId: newValues.organization,
-            //   password: newValues.password,
-            // };
-            // const func = async () => {
-            //   const response: any = await registerVolonteer(transformedObject);
-            //   const {accessToken, role, userId, userName, email} = response;
-            //   dispatch(
-            //     updateUser({accessToken, role, userId, userName, email}),
-            //   );
-            //   setSecureValue('token', accessToken);
-              navigation.navigate('ChooseOrg', {values: values});
-            // };
-            // func();
-          }}>
+          onSubmit={handleLogic}>
           {({
             handleChange,
             handleBlur,
@@ -109,8 +87,9 @@ const VolonteerRegister = () => {
             errors,
             touched,
           }) => (
+            <>
             <View>
-              <View>
+              <View style={styles.centered}>
                 <Text style={styles.smallLabel}>Повне ім'я (ПІБ)</Text>
                 <TextInput
                   style={styles.input}
@@ -153,7 +132,7 @@ const VolonteerRegister = () => {
                 <Text style={styles.smallLabel}>Пароль</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="********"
+                  placeholder="exampleA0"
                   onChangeText={handleChange('password')}
                   onBlur={handleBlur('password')}
                   value={values.password}
@@ -167,7 +146,7 @@ const VolonteerRegister = () => {
                 <Text style={styles.smallLabel}>Підтвердіть пароль</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="********"
+                  placeholder="exampleA0"
                   onChangeText={handleChange('confirmPassword')}
                   onBlur={handleBlur('confirmPassword')}
                   value={values.confirmPassword}
@@ -187,6 +166,7 @@ const VolonteerRegister = () => {
               </View>
               </View>
             </View>
+            </>
           )}
         </Formik>
       </ImageBackground>

@@ -1,9 +1,10 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {StyleSheet, View, TextInput, Image, Text, Button, TouchableOpacity, ScrollView} from 'react-native';
+import {StyleSheet, View, TextInput, Image, Text, Button, TouchableOpacity,
+   ScrollView, ImageBackground} from 'react-native';
 import { useDispatch} from 'react-redux';
 import Payment from './Payment';
 import { useNavigation, useTheme } from '@react-navigation/native';
-import { LinearGradient, Path, Svg } from 'react-native-svg';
+import { Path, Svg } from 'react-native-svg';
 import { payment } from '../../services/services/payment';
 import Card from '../../components/Card';
 
@@ -22,9 +23,9 @@ export const SvgAdd = () => {
         StyleSheet.absoluteFill,
         styles.add,
         {alignItems: 'center', justifyContent: 'center'},]}>
-<Svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-<Path d="M6.00002 1.40912V10.5671" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<Path d="M10.5834 5.9881H1.41675" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<Svg width="20" height="20" viewBox="0 0 12 12" fill="none">
+<Path d="M6.00002 1.40912V10.5671" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<Path d="M10.5834 5.9881H1.41675" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </Svg>
     </View>
   );
@@ -68,6 +69,11 @@ const theme = useTheme()
 
   return (
     <ScrollView style={styles.mainContainer}>
+      <ImageBackground
+        source={require('../../../assets/bgr_darkBlue_blue.png')}
+        resizeMode='cover'
+        style={styles.backgroundContainer}
+        >
       <View 
       // style={styles.autoLayerColumn}
       >
@@ -112,10 +118,12 @@ const theme = useTheme()
   text={item.name}
   linkTo={'PaymentStruct'}
   payment={item.amount}
-  id={item.id}/>
+  id={item.id}
+  token={user.token}/>
           ))}
         </View>
       </View>
+      </ImageBackground>
     </ScrollView>
   );
 };
@@ -123,16 +131,22 @@ const theme = useTheme()
 export default Payments;
 
 const styles = StyleSheet.create({
+  backgroundContainer: {
+    // marginTop: 50,
+    paddingBottom: 20,
+    flex: 1,
+    flexGrow: 1,
+  },
   mainContainer: {
-    overflow: 'hidden',
-    backgroundColor: "#DEFEFA",
-    height: "100%"
+    flexGrow: 1,
+    // overflow: 'scroll',
+    // height: 700
   },
   autoLayerRow: {
     // position: 'absolute',
     display: 'flex',
     flexDirection: 'row',
-    width: 132,
+    width: 13,
     height: 28,
     top: 5,
     right: 14

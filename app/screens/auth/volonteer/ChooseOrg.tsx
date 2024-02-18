@@ -1,20 +1,18 @@
 import React, {useEffect, useState} from 'react';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import {
   View,
   Text,
   TextInput,
-  Button,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
   ImageBackground,
 } from 'react-native';
-import {Picker} from '@react-native-picker/picker';
 import {useNavigation} from '@react-navigation/native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {transformToFormikErrors} from '../../../utils/form';
 import {Path, Svg} from 'react-native-svg';
 import {
   establishmentForVols,
@@ -23,11 +21,11 @@ import {
 import {useDispatch} from 'react-redux';
 import {updateUser} from '../../../store/userSlice';
 import {setSecureValue} from '../../../utils/keyChain';
-import { SvgAdd } from '../../../screens/Payments/Payments';
+import {SvgAdd} from '../../../screens/Payments/Payments';
 
 const ChooseOrgSchema = Yup.object().shape({
   socialMediaLink: Yup.string().required("Це поле є обов'язковим"),
-  organization: Yup.string().required("Це поле є обов'язковим"),
+  // organization: Yup.string().required("Це поле є обов'язковим"),
 });
 
 export const BackSVG = () => {
@@ -44,7 +42,11 @@ export const BackSVG = () => {
   );
 };
 
-const ChooseOrg = ({props}: any) => {
+const ChooseOrg = (props) => {
+  const params = props.route.params.values
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+
   const [error, setError] = useState('');
   const [establishments, setEstablishments] = useState([]);
 
@@ -57,24 +59,42 @@ const ChooseOrg = ({props}: any) => {
 
   useEffect(() => {
     const func = async () => {
-      const response: any = await establishmentForVols();
-      debugger;
+      const response: any = await establishmentForVols({TypeId:1}, {});
       setEstablishments(response);
     };
     func();
   }, []);
 
 
-  const addOrg =()=>{
-    navigation.navigate('CreateOrg');
+
+  const handleLogic = (values) => {
+    
+    const transformedObject = {
+      fullName: params.fullName,
+      phoneNumber: params.phone,
+      email: params.email,
+      socialUrl: values.socialMediaLink,
+      establishmentId: value,
+      password: params.password,
+    };
+    const func = async () => {
+      const response: any = await registerVolonteer(transformedObject);
+      const {accessToken, role, userId, userName, email} = response;
+      dispatch(
+        updateUser({accessToken, role, userId, userName, email}),
+      );
+      setSecureValue('token', accessToken);
+      navigation.navigate('FlashScreen', {name: userName});
+    };
+    func();
   }
+
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <ImageBackground
         source={require('../../../../assets/bgr_darkBlue_blue.png')}
         resizeMode="cover"
-        style={styles.backgroundContainer}
-        >
+        style={styles.backgroundContainer}>
         <View style={{top: 30}}>
           <TouchableOpacity onPress={goBack}>
             <BackSVG />
@@ -85,30 +105,9 @@ const ChooseOrg = ({props}: any) => {
         <Formik
           initialValues={{
             socialMediaLink: '',
-            organization: '',
           }}
           validationSchema={ChooseOrgSchema}
-          onSubmit={(values, {setErrors, resetForm}) => {
-            const organizationNumber = parseInt(values.organization, 10);
-            const transformedObject = {
-              fullName: props.fullName,
-              phoneNumber: props.phone,
-              email: props.email,
-              socialUrl: values.socialMediaLink,
-              establishmentId: organizationNumber,
-              password: props.password,
-            };
-            const func = async () => {
-              const response: any = await registerVolonteer(transformedObject);
-              const {accessToken, role, userId, userName, email} = response;
-              dispatch(
-                updateUser({accessToken, role, userId, userName, email}),
-              );
-              setSecureValue('token', accessToken);
-              navigation.navigate('FlashScreen', {name: userName});
-            };
-            func();
-          }}>
+          onSubmit={handleLogic}>
           {({
             handleChange,
             handleBlur,
@@ -130,29 +129,26 @@ const ChooseOrg = ({props}: any) => {
                   value={values.socialMediaLink}
                 />
               </View>
-
-              <View style={styles.centered}>
-                <Text style={styles.smallLabel}>
-                  Назва волонтерської організації
-                </Text>
-                <View style={styles.establishment}>
-                  <Picker
-                    style={styles.estInput}
-                    selectedValue={values.organization}
-                    onValueChange={value =>
-                      handleChange('organization')(value)
-                    }>
-                    <Picker.Item label="Виберіть зі списку" value="-1" />
-                    {establishments.map(item => {
-                      <Picker.Item label={item.name} value={item.id} />;
-                    })}
-                  </Picker>
-                  <TouchableOpacity onPress={addOrg}>
-                    <View style={styles.autoLayerRow}>
-                      <Text style={styles.edit2}>Додати</Text>
-                      <SvgAdd />
-                    </View>
-                  </TouchableOpacity>
+              <View style={[styles.centered]}>
+                <Text style={styles.smallLabel}>Волонтерська організація</Text>
+                <View style={{display: 'flex', flexDirection:'row'}}>
+                <DropDownPicker
+                  style={styles.estInput}
+                  open={open}
+                  value={value}
+                  items={establishments.map(item => ({
+                    label: item.name,
+                    value: item.id,
+                  }))}
+                  setOpen={setOpen}
+                  setValue={setValue}
+                  setItems={setEstablishments}
+                />
+                 <TouchableOpacity onPress={()=>{ ; navigation.navigate('CreateOrg');}}>
+                  <View style={{position: 'absolute', right: 25, top: 25}}>
+                    <SvgAdd />
+                  </View>
+                </TouchableOpacity>
                 </View>
               </View>
 
@@ -185,7 +181,7 @@ const styles = StyleSheet.create({
     height: 21,
     // top: 3,
     left: 35,
-     
+
     color: 'rgb(255, 255, 255)',
     fontSize: 14,
     fontWeight: '600',
@@ -200,7 +196,7 @@ const styles = StyleSheet.create({
     width: 132,
     height: 28,
     top: 5,
-    right: 14
+    right: 14,
     // zIndex: 12,
   },
   backButton: {
@@ -304,14 +300,18 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   estInput: {
+    elevation: 5,
+    shadowColor: 'gray',
+    marginBottom: 20,
+    marginLeft: 10,
+    paddingLeft: 15,
+    borderRadius: 20,
+    // backgroundColor: 'white',
     width: '84%',
     height: 41,
     flexShrink: 0,
     borderColor: 'white',
     borderWidth: 1,
-    marginBottom: 0,
-    paddingLeft: 10,
-    borderRadius: 10,
     background: '#FFF',
     // boxShadow: '0px 4px 15px 0px rgba(0, 0, 0, 0.10)',
     // display: 'inline'

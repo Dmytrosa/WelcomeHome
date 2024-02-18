@@ -22,10 +22,15 @@ export const register = async(body: any) => {
   }
   return sumresp
 };
-export const establishmentForVols = async () => {
-  const params = {EstablishmentTypeId: 1, CityId: null}
-  const response =  await executeRequest( 'GET' , `${routes.establishment}`, {params});
-  if (response.status == 200 )return response.data
+export const establishmentForVols = async (querys, body) => {
+  const queryParams = {EstablishmentTypeId: querys.TypeId}
+  let response = null
+  if (querys) {
+     response =  await executeRequest( 'GET' , `${routes.establishment}`, {queryParams});}
+    else{
+       response =  await executeRequest( 'GET' , `${routes.establishment}`, {body});}
+    
+  if (response.status == 200 )return response.data.$values
 };
 
 export const registerVolonteer = async (body: any) => {

@@ -1,12 +1,14 @@
 import { executeRequest, routes } from "..";
 
-export const cityGET = async () => {
-    const response =  await executeRequest( 'GET' , `${routes.city}`, {});
-    if (response.status == 200 )return response.data
+export const cityGET = async (body: any= {}) => {
+    const response =  await executeRequest( 'GET' , `${routes.city}`, {body});
+    
+    if (response.status == 200 )return response.data.$values
   };
 
 export const cityCountryID = async (body: any) => {
     const response =  await executeRequest( 'GET' , `${routes.cityCountryId}`, {body});
+    
     if (response.status == 200 )return response.data
   };
 
