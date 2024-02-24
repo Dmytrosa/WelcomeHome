@@ -16,7 +16,7 @@ import {LeaveBtn} from './Main/accountLeaveBtn';
 import AccAction from './Main/accountAction';
 import {AccHeader} from './Header/AccountHeader';
 
-const Account = props => {
+const Account = (props) => {
   const data = props.route.params;
   const {theme} = useTheme();
 
@@ -30,7 +30,6 @@ const Account = props => {
       style={styles.backgroundContainer}>
       {/* <StatusBar backgroundColor="#C9D8E5" barStyle="light-content" /> */}
       <AccHeader name={data.name} email={data.email} />
-
       <Text style={styles.text}>Додаткові можливості</Text>
       <View style={styles.card}>
         <View style={styles.textContainer}>

@@ -53,6 +53,9 @@ const VolonteerRegister = () => {
   const handleLogic = (values) => {
       navigation.navigate('ChooseOrg', {values: values});
   }
+  const handlerToLogIn = () => {
+    navigation.navigate('LogIn');
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -161,9 +164,9 @@ const VolonteerRegister = () => {
                 <TouchableOpacity onPress={handleSubmit} style={styles.submit}>
                   <Text style={styles.buttonText}>Далі</Text>
                 </TouchableOpacity>
-                <View style={styles.login}>
-                <Text style={styles.linkText}>Вже зареєстровані? Увійти</Text>
-              </View>
+                <TouchableOpacity onPress={handlerToLogIn}>
+            <Text style={styles.login}>Вже зареєстровані? Увійти</Text>
+          </TouchableOpacity>
               </View>
             </View>
             </>
@@ -176,6 +179,7 @@ const VolonteerRegister = () => {
 
 const styles = StyleSheet.create({
   login:{
+    marginTop: 15,
     fontSize: 15,
     top:"50%",
     fontWeight: '600',

@@ -19,7 +19,7 @@ import {useDispatch} from 'react-redux';
 import {updateUser} from '../../store/userSlice';
 import {setSecureValue} from '../../utils/keyChain';
 import {register} from '../../services/services/auth';
-import { BackSVG } from './volonteer/ChooseOrg';
+import {BackSVG} from './volonteer/ChooseOrg';
 
 const StepCreateSchema = Yup.object().shape({
   fullName: Yup.string().required("Це поле є обов'язковим"),
@@ -58,10 +58,13 @@ const UserRegister = () => {
     func();
   };
 
-  const navigator = useNavigation();
+
+  const handlerToLogIn = () => {
+    navigation.navigate('LogIn');
+  };
 
   const goBack = () => {
-    navigator.goBack();
+    navigation.goBack();
   };
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -167,14 +170,13 @@ const UserRegister = () => {
 
               {errors.error && <Text>{errors.error}</Text>}
 
-
               <View style={styles.centered}>
                 <TouchableOpacity style={styles.submit} onPress={handleSubmit}>
                   <Text style={styles.buttonText}>Зареєструватися</Text>
                 </TouchableOpacity>
-                <View style={styles.login}>
-                <Text style={styles.linkText}>Вже зареєстровані? Увійти</Text>
-              </View>
+                <TouchableOpacity onPress={handlerToLogIn}>
+            <Text style={styles.login}>Вже зареєстровані? Увійти</Text>
+          </TouchableOpacity>
               </View>
             </>
           )}
@@ -185,18 +187,18 @@ const UserRegister = () => {
 };
 
 const styles = StyleSheet.create({
-  login:{
-    display: "flex",
+  login: {
+    marginTop: 20,
+    display: 'flex',
     fontSize: 15,
-    top:"50%",
+    top: '50%',
     fontWeight: '600',
     textDecorationLine: 'underline',
     color: 'black',
   },
   scrollViewContainer: {
     flexGrow: 1,
-    marginTop: -20
-
+    marginTop: -20,
   },
   backgroundContainer: {
     padding: 20,

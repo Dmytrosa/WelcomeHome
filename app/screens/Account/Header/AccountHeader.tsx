@@ -17,13 +17,13 @@ const Settings = () => {
   );
 };
 
-const AccHeader = props => {
+const AccHeader = (props) => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.container}>
         <View>
           <Text style={styles.stepanBandera}>{props.name}</Text>
-          <Text style={styles.phoneNumber}>{props.phoneNumber}</Text>
+          <Text style={styles.phoneNumber}>{props.email}</Text>
         </View>
         <Settings />
       </View>

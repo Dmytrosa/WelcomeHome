@@ -3,7 +3,6 @@ import { executeRequest, routes } from "..";
 export const login = async (body: any) => {
   
   const response =  await executeRequest( 'POST' , `${routes.loginisation}`, {body});
-  
   const email = body.email
   return {...response.data, email}
 };

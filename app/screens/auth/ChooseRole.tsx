@@ -1,5 +1,4 @@
 import {useNavigation} from '@react-navigation/native';
-import axios from 'axios';
 import React from 'react';
 import {
   View,

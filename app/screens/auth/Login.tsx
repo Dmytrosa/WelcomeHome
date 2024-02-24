@@ -21,6 +21,7 @@ import {setSecureValue} from '../../utils/keyChain';
 import {transformToFormikErrors} from '../../utils/form';
 import {useNavigation} from '@react-navigation/native';
 import {Path, Svg} from 'react-native-svg';
+import { BackSVG } from './volonteer/ChooseOrg';
 
 interface ValuesType {
   email: string;
@@ -40,19 +41,6 @@ const LoginSchema = Yup.object().shape({
     .required('Required'),
 });
 
-const SVG = () => {
-  return (
-    <Svg width="10" height="16" viewBox="0 0 10 16" fill="none">
-      <Path
-        d="M8.5 15L1.5 8L8.5 1"
-        stroke="#101010"
-        stroke-width="1.66667"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </Svg>
-  );
-};
 
 const Login = () => {
   const navigation = useNavigation();
@@ -67,7 +55,6 @@ const Login = () => {
       };
       const response: any = await login(transformedObject);
       const {accessToken, role, userId, userName, email} = response;
-      
       dispatch(updateUser({accessToken, role, userId, userName, email}));
       setSecureValue('token', accessToken);
       navigation.navigate('FlashScreen', {name: userName});
@@ -90,7 +77,7 @@ const Login = () => {
           style={styles.backgroundContainer}>
           <TouchableOpacity onPress={goBack}>
             <View style={styles.backButton}>
-              <SVG />
+              <BackSVG />
             </View>
           </TouchableOpacity>
           <Text style={styles.heading}>Введіть інформацію для входу</Text>

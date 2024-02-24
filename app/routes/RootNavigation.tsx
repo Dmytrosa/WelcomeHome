@@ -31,25 +31,24 @@ import VolonteerRegister from '../screens/auth/volonteer/VolonteerRegister';
 import FlashScreen from '../screens/auth/assets/FlashScreen';
 import ChooseOrg from '../screens/auth/volonteer/ChooseOrg';
 import CreateOrg from '../screens/auth/volonteer/OrganisationCreate';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const accIcon = ({color}: {color: ColorValue | number}) => (
-  <Icon name="person-outline" size={30} color={color} />
+const accIcon = ({focused, color, size}) => (
+  <Icon name={focused ? "person" : "person-outline"} size={30} color={color} />
 );
-const centersIcon = ({color}: {color: ColorValue | number}) => (
-  <Icon name="bandage-outline" size={28} color={color} />
+const centersIcon = ({focused, color, size}) => (
+  <Icon name={focused ? "bandage" : "bandage-outline"} size={28} color={color} />
 );
-const helpIcon = ({color}: {color: ColorValue | number}) => (
-  <Icon name="heart-outline" size={30} color={color} />
+const helpIcon = ({focused, color, size}) => (
+  <Icon name={focused ? "heart" : "heart-outline"} size={30} color={color} />
 );
-const workIcon = ({color}: {color: ColorValue | number}) => (
-  <Icon name="briefcase-outline" size={30} color={color} />
+const workIcon = ({focused, color, size}) => (
+  <Icon name={focused ? "briefcase" : "briefcase-outline"} size={30} color={color} />
 );
-const paymentsIcon = ({color}: {color: ColorValue | number}) => (
-  <Icon name="wallet-outline" size={30} color={color} />
+const paymentsIcon = ({focused, color, size}) => (
+  <Icon name={focused ? 'wallet' : 'wallet-outline'} size={30} color="white"  />
 );
-const paymentsIconActive = ({color}: {color: ColorValue | number}) => (
-  <Icon name="wallet" size={30} color={color} />
-);
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -226,6 +225,8 @@ export default function RootNavigation() {
     checkIsLogined();
   }, [dispatch]);
 
+
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -240,6 +241,7 @@ export default function RootNavigation() {
         {/* {user.token ? ( */}
 
         <Tab.Navigator
+        //  initialRouteName={"AuthTEST"}
           screenOptions={{
             tabBarStyle: {backgroundColor: '#01161E'},
             tabBarInactiveTintColor: 'white',
@@ -253,7 +255,7 @@ export default function RootNavigation() {
             options={{
               tabBarIcon: paymentsIcon,
               headerShown: false,
-              tabBarLabel: 'Виплати',
+              tabBarLabel: '',
             }}
           />
           <Tab.Screen
@@ -263,7 +265,6 @@ export default function RootNavigation() {
               tabBarStyle: {display: 'none'},
               headerShown: false,
               tabBarLabel: '',
-              tabBarVisible: false,
             }}
           />
           <Tab.Screen
