@@ -241,7 +241,6 @@ export default function RootNavigation() {
         {/* {user.token ? ( */}
 
         <Tab.Navigator
-        //  initialRouteName={"AuthTEST"}
           screenOptions={{
             tabBarStyle: {backgroundColor: '#01161E'},
             tabBarInactiveTintColor: 'white',
@@ -249,20 +248,20 @@ export default function RootNavigation() {
             headerStyle: {backgroundColor: theme.cardBg, height: 50},
             headerTitleStyle: {color: theme.color, fontSize: 16},
           }}>
+            <Tab.Screen
+              name="AuthTEST"
+              component={AuthTEST}
+              options={{
+                tabBarStyle: {display: 'none'},
+                headerShown: false,
+                tabBarLabel: '',
+              }}
+            />
           <Tab.Screen
             name="Payments"
             component={PaymentsStack}
             options={{
               tabBarIcon: paymentsIcon,
-              headerShown: false,
-              tabBarLabel: '',
-            }}
-          />
-          <Tab.Screen
-            name="AuthTEST"
-            component={AuthTEST}
-            options={{
-              tabBarStyle: {display: 'none'},
               headerShown: false,
               tabBarLabel: '',
             }}

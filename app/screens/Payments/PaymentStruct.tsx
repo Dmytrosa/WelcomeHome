@@ -1,17 +1,24 @@
-import { paymentId } from '../../services/services/payment';
-import React, { useEffect, useState } from 'react';
-import {StyleSheet, View, Text, ScrollView, TouchableWithoutFeedback, } from 'react-native';
+import { useTheme } from '../../theme/useTheme';
+import {paymentId} from '../../services/services/payment';
+import React, {useEffect, useState} from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  TouchableWithoutFeedback,
+  ImageBackground,
+} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 
-type payStruct ={
-    title: string
-}
+type payStruct = {
+  title: string;
+};
 
-
-const TruncateText = ({ initialText = ".", maxChars= 1 }) => {
+const TruncateText = ({initialText = '.', maxChars = 1}) => {
   const [expanded, setExpanded] = useState(false);
   const truncatedText = initialText.slice(0, maxChars);
-  
+
   return (
     <TouchableWithoutFeedback onPress={() => setExpanded(!expanded)}>
       <View>
@@ -24,138 +31,146 @@ const TruncateText = ({ initialText = ".", maxChars= 1 }) => {
   );
 };
 
-
 const SvgEdit = () => {
   return (
     <View
       style={[
         StyleSheet.absoluteFill,
         styles.add,
-        {alignItems: 'center', justifyContent: 'center'},]}>
-      <Svg  width="20" height="20" viewBox="0 0 20 20" fill="none">
-<Path d="M9.31055 14.3322H14.75" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<Path fill-rule="evenodd" clip-rule="evenodd" d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<Path d="M7.26562 3.50067L11.3548 6.64102" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</Svg>
+        {alignItems: 'center', justifyContent: 'center'},
+      ]}>
+      <Svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <Path
+          d="M9.31055 14.3322H14.75"
+          stroke="white"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <Path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M8.58501 1.84609C9.16674 1.15084 10.2125 1.04889 10.9222 1.6188C10.9614 1.64972 12.2221 2.62909 12.2221 2.62909C13.0017 3.10039 13.244 4.10233 12.762 4.86694C12.7365 4.90789 5.60896 13.8234 5.60896 13.8234C5.37183 14.1192 5.01187 14.2938 4.62718 14.298L1.89765 14.3323L1.28265 11.7292C1.1965 11.3632 1.28265 10.9788 1.51978 10.683L8.58501 1.84609Z"
+          stroke="white"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <Path
+          d="M7.26562 3.50067L11.3548 6.64102"
+          stroke="white"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </Svg>
     </View>
   );
 };
 
-const PaymentStruct = ({ route }) => {
+const PaymentStruct = ({route}) => {
+  const {id, token} = route.params;
+  const [payment, setPayment] = useState({});
+  const theme = useTheme();
 
-
-const {id, token} = route.params
-const [payment, setPayment] = useState({});
-
-
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const user={token: token}
-      const params = {payoutId: id}
-      const response = await paymentId(user, params);
-//       $id: "1"
-// amount: 15000000
-// description: "Хто має право на ... "
-// id: 1
-// name: "Одноразова грошова допомога у разі загибелі військовослужбовця"
-// steps: Object
-    // $values: Array(0)
-// userCategories: null
-      
-      setPayment(response)
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-    }
-  };
-  fetchData();
-}, []); 
-
-
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        debugger
+        const user = {token: token};
+        const params = {payoutId: id};
+        debugger
+        const response = await paymentId(user, params);
+        debugger
+        setPayment(response);
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
+    fetchData();
+    
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-
-      <View>
-         <Text style={styles.oneTimeFinancialAssistance}>
-         {payment.name}
-         </Text>
-        <View style={styles.edit}>
-          <View style={styles.autoLayerRow1}>
-            <Text style={styles.edit2}>Редагувати</Text>
-            <SvgEdit/>
+      <ImageBackground
+        source={require('../../../assets/bgr_darkBlue_blue.png')}
+        resizeMode="cover">
+        <View>
+          <Text style={styles.oneTimeFinancialAssistance}>{payment.name}</Text>
+          <View style={styles.edit}>
+            <View style={styles.autoLayerRow1}>
+              <Text style={styles.edit2}>Редагувати</Text>
+              <SvgEdit />
+            </View>
           </View>
-        </View>
-        <View style={styles.description} >
+          <View style={styles.description}>
             <Text style={styles.description5}>Опис</Text>
-           <TruncateText  initialText={payment.description} maxChars={200} />
-        </View>
-        <View style={styles.amount}>
-          <View style={styles.autoLayerRow6}>
-            <Text style={styles.amount7}>Сума</Text>
-            <Text style={styles.amountCurrency}> {payment.amount} ₴ </Text>
+            <TruncateText initialText={payment.description} maxChars={200} />
           </View>
-        </View>
-        <View style={styles.howToGet}>
-          <View style={styles.autoLayerRow9}>
-            <Text style={styles.howToGetInCity}>Як отримати у місті</Text>
-            <Text style={styles.category}>Київ                             ↓</Text>
-            <View style={styles.arrowLeft}>
-              <View style={styles.stroke} />
+          <View style={styles.amount}>
+            <View style={styles.autoLayerRow6}>
+              <Text style={styles.amount7}>Сума</Text>
+              <Text style={styles.amountCurrency}> {payment.amount} ₴ </Text>
             </View>
           </View>
-        </View>
-        <View style={styles.steps}>
-
-        {payment.steps && payment.steps.$values.map((step)=>{
-          <View style={styles.step}>
-          <View style={styles.autoLayerRowB}>
-            <Text style={styles.step1}>Крок {step.num}.</Text>
-            <View style={styles.editStep}>
-          <View style={styles.autoLayerRow1}>
-            <Text style={styles.edit2}>Редагувати</Text>
-            <SvgEdit/>
-            <View style={styles.home}>
-              <View style={styles.edit3} />
-            </View>
-          </View>
-        </View>
-            <View style={styles.getDocuments}>
-              <Text style={styles.getDocumentsD}>
-                {step.text1}
-              </Text>
-              <Text style={styles.getDocumentsE}>
-                {step.text2}
-                </Text>
-            </View>
-            <View style={styles.getDocuments}>
-              <Text style={styles.getDocumentsD}>Отримати&nbsp;документи:</Text>
-              <Text style={styles.getDocumentsE}>
-                -&nbsp;витяг&nbsp;з&nbsp;наказу&nbsp;про&nbsp;виключення&nbsp;загиблого&nbsp;зі&nbsp;списку&nbsp;особового&nbsp;складу&nbsp;військової&nbsp;частини;-&nbsp;документ,&nbsp;що&nbsp;свідчить&nbsp;про&nbsp;причини&nbsp;та&nbsp;обставини&nbsp;загибелі&nbsp;(смерті)&nbsp;військового;-&nbsp;витяг&nbsp;з&nbsp;особової&nbsp;справи&nbsp;про&nbsp;склад&nbsp;сім'ї&nbsp;військовослужбовця.
-              </Text>
-            </View>
-            <View style ={styles.whereInfo}>
-            <View style={styles.where}>
-              <Text style={styles.where10}>Де ?</Text>
-            <Text style={styles.link}>Посилання</Text>
-            </View>
-
-            </View>
-            <View style={styles.edit11}>
-              <View style={styles.autoLayerRow12}>
-                <View style={styles.ellipse} />
-                <View style={styles.home13}>
-                  <View style={styles.edit14} />
-                </View>
+          <View style={styles.howToGet}>
+            <View style={styles.autoLayerRow9}>
+              <Text style={styles.howToGetInCity}>Як отримати у місті</Text>
+              <Text style={styles.category}>Київ ↓</Text>
+              <View style={styles.arrowLeft}>
+                <View style={styles.stroke} />
               </View>
             </View>
           </View>
-          </View>
-        }) }
+          <View style={styles.steps}>
 
+          </View>
         </View>
-      </View>
-      </ScrollView>
+      </ImageBackground>
+       {/* {payment.steps && payment.steps.$values.map((step) => {
+                <View style={styles.step}>
+                  <View style={styles.autoLayerRowB}>
+                    <Text style={styles.step1}>
+                      Крок {step.sequenceNumber + 1}.
+                    </Text>
+                    <View style={styles.editStep}>
+                      <View style={styles.autoLayerRow1}>
+                        <Text style={styles.edit2}>Редагувати</Text>
+                        <SvgEdit />
+                        <View style={styles.home}>
+                          <View style={styles.edit3} />
+                        </View>
+                      </View>
+                    </View>
+                    <View style={styles.getDocuments}>
+                      <Text style={styles.getDocumentsD}>
+                        {step.description}
+                      </Text>
+                    </View>
+                  </View>
+                </View>;
+              })} */}
+               {/* <View style={styles.getDocuments}>
+                      <Text style={styles.getDocumentsD}>
+                        Отримати документи:
+                      </Text>
+                      {payment && payment.steps.documentsBring.$values.map(doc => {
+                        <View>
+                        <Text style={styles.getDocumentsE}>
+                          {doc.name}
+                        </Text>;
+                         <View style={styles.whereInfo}>
+                         <View style={styles.where}>
+                           <Text style={styles.where10}>Де ?</Text>
+                           <Text style={styles.link}>Посилання</Text>
+                         </View>
+                       </View>
+                       </View>
+                      })}
+                    </View> */}
+    </ScrollView>
+               
   );
 };
 
@@ -164,27 +179,27 @@ export default PaymentStruct;
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "white"
+    backgroundColor: 'white',
     // justifyContent: 'center',
     // alignItems: 'center',
   },
-  step:{
+  step: {
     display: 'flex',
     // height: 200,
-    marginBottom: 20
+    marginBottom: 20,
   },
-  whereInfo:{
-bottom: 10
+  whereInfo: {
+    bottom: 10,
   },
   oneTimeFinancialAssistance: {
     // position: 'absolute',
-    width: "70%",
+    width: '70%',
     height: 60,
-    marginTop : "10%",
-    marginLeft: "13%",
+    marginTop: '10%',
+    marginLeft: '13%',
     // top: 63,
     // left: 42,
-     
+
     color: 'rgb(0, 0, 0)',
     fontSize: 19,
     fontWeight: '700',
@@ -202,7 +217,7 @@ bottom: 10
     marginLeft: 8,
     zIndex: 11,
     overflow: 'hidden',
-    backgroundColor: "#281A67",
+    backgroundColor: '#281A67',
     borderRadius: 30,
     //  marginTop : 20,
     // marginBottom: 20
@@ -212,11 +227,11 @@ bottom: 10
     width: 140,
     height: 26,
     top: 10,
-    left: "50%",
+    left: '50%',
     marginLeft: 8,
     zIndex: 11,
     overflow: 'hidden',
-    backgroundColor: "#281A67",
+    backgroundColor: '#281A67',
     borderRadius: 30,
     //  marginTop : 20,
     // marginBottom: 20
@@ -228,12 +243,12 @@ bottom: 10
     width: 132,
     height: 28,
     top: 5,
-    right: 14
+    right: 14,
     // zIndex: 12,
   },
   add: {
-    left: "100%",
-    paddingBottom:3,
+    left: '100%',
+    paddingBottom: 3,
     background: 'rgb(39, 26, 103)',
     // zIndex: 1,
     borderRadius: 20,
@@ -244,7 +259,7 @@ bottom: 10
     height: 21,
     // top: 3,
     left: 35,
-     
+
     color: 'rgb(255, 255, 255)',
     fontSize: 14,
     fontWeight: '600',
@@ -271,10 +286,10 @@ bottom: 10
   },
   description: {
     backgroundColor: '#F7F9FB',
-  paddingLeft:10,
-  paddingBottom:10,
-  paddingTop:5,
-  borderRadius: 5,
+    paddingLeft: 10,
+    paddingBottom: 10,
+    paddingTop: 5,
+    borderRadius: 5,
     width: 367,
     marginTop: 30,
     marginBottom: 20,
@@ -306,7 +321,7 @@ bottom: 10
     paddingLeft: 17,
     // height: 28,
     marginBottom: 5,
-     
+
     color: '#1f1f1f',
     fontSize: 19,
     fontWeight: '500',
@@ -315,13 +330,12 @@ bottom: 10
     // zIndex: 20,
   },
   whoCanReceive: {
-    
     // position: 'absolute',
     // width: 340,
     // height: 267,
     // top: 33,
     // left: 13,
-     
+
     color: 'rgb(0, 0, 0)',
     fontSize: 17,
     fontWeight: '300',
@@ -352,7 +366,7 @@ bottom: 10
     height: 28,
     top: 6,
     left: 0,
-     
+
     color: 'rgb(0, 0, 0)',
     fontSize: 15,
     fontWeight: '500',
@@ -378,11 +392,11 @@ bottom: 10
     position: 'absolute',
     width: 264,
     height: 25,
-    
+
     // top: 7,
     marginTop: 7,
     left: 60,
-     
+
     color: 'rgb(0, 0, 0)',
     fontSize: 15,
     fontWeight: '500',
@@ -415,7 +429,7 @@ bottom: 10
     // top: 6,
     marginTop: 6,
     left: 0,
-     
+
     color: 'rgb(0, 0, 0)',
     fontSize: 15,
     fontWeight: '500',
@@ -440,11 +454,11 @@ bottom: 10
     paddingLeft: 15,
 
     position: 'absolute',
-    width: "50%",
+    width: '50%',
     height: 30,
     top: 5,
     left: 176,
-     
+
     color: 'rgb(0, 0, 0)',
     fontSize: 15,
     fontWeight: '500',
@@ -470,15 +484,12 @@ bottom: 10
   },
   steps: {
     // position: 'absolute',
-    width: 368,
-    height: "100%",
     // top: 400,
     left: 13,
     zIndex: 34,
     overflow: 'hidden',
   },
   autoLayerRowB: {
-    
     borderRadius: 5,
     backgroundColor: '#F7F9FB',
     padding: 2,
@@ -507,7 +518,7 @@ bottom: 10
     height: 21,
     top: 4,
     left: 20,
-     
+
     color: 'rgb(0, 0, 0)',
     fontSize: 17,
     fontWeight: '600',
@@ -522,7 +533,7 @@ bottom: 10
     // height: 90,
     top: 15,
     left: 9,
-     
+
     // marginBottom: 5,
     fontSize: 15,
     fontWeight: '300',
@@ -534,7 +545,6 @@ bottom: 10
   getDocumentsD: {
     textDecorationLine: 'underline',
 
-     
     color: 'rgb(0, 0, 0)',
     fontSize: 15,
     fontWeight: '500',
@@ -544,7 +554,6 @@ bottom: 10
     wordBreak: 'break-word',
   },
   getDocumentsE: {
-     
     color: 'rgb(0, 0, 0)',
     fontSize: 14,
     fontWeight: '300',
@@ -569,7 +578,7 @@ bottom: 10
     // top: 125,
     marginTop: 40,
     left: 11,
-     
+
     fontSize: 10,
     fontWeight: '600',
     lineHeight: 15,
@@ -579,7 +588,6 @@ bottom: 10
     zIndex: 40,
   },
   where10: {
-     
     color: 'rgb(0, 0, 0)',
     fontSize: 10,
     fontWeight: '600',
@@ -588,7 +596,6 @@ bottom: 10
     textDecoration: 'underline',
   },
   questionMark: {
-     
     color: 'rgb(0, 0, 0)',
     fontSize: 10,
     fontWeight: '600',
@@ -614,7 +621,7 @@ bottom: 10
     // top: 124,
     bottom: 14,
     left: 39,
-     
+
     color: 'rgb(0, 0, 0)',
     fontSize: 11,
     fontWeight: '600',

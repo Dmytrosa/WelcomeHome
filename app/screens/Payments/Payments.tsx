@@ -1,13 +1,21 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {StyleSheet, View, TextInput, Image, Text, Button, TouchableOpacity,
-   ScrollView, ImageBackground} from 'react-native';
-import { useDispatch} from 'react-redux';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Image,
+  Text,
+  Button,
+  TouchableOpacity,
+  ScrollView,
+  ImageBackground,
+} from 'react-native';
+import {useDispatch} from 'react-redux';
 import Payment from './Payment';
-import { useNavigation, useTheme } from '@react-navigation/native';
-import { Path, Svg } from 'react-native-svg';
-import { payment } from '../../services/services/payment';
-import Card from '../../components/Card';
-
+import {useNavigation, useTheme} from '@react-navigation/native';
+import {Path, Svg} from 'react-native-svg';
+import {payment} from '../../services/services/payment';
+import {SearchSVG} from '../../../assets/public/svg/search';
 
 type payments = {
   text: string;
@@ -15,114 +23,176 @@ type payments = {
   photoLink: string;
 };
 
-
 export const SvgAdd = () => {
   return (
     <View
       style={[
         StyleSheet.absoluteFill,
         styles.add,
-        {alignItems: 'center', justifyContent: 'center'},]}>
-<Svg width="20" height="20" viewBox="0 0 12 12" fill="none">
-<Path d="M6.00002 1.40912V10.5671" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<Path d="M10.5834 5.9881H1.41675" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</Svg>
+        {alignItems: 'center', justifyContent: 'center'},
+      ]}>
+      <Svg width="20" height="20" viewBox="0 0 12 12" fill="none">
+        <Path
+          d="M6.00002 1.40912V10.5671"
+          stroke="black"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <Path
+          d="M10.5834 5.9881H1.41675"
+          stroke="black"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </Svg>
     </View>
   );
 };
 
-
-const Payments = (props : any) => {
-  
-const user = props.route.params
-const [payments, setPayments] = useState([])
-  
-const theme = useTheme()
-
+const Payments = (props: any) => {
+  const user = props.route.params;
+  const [payments, setPayments] = useState([]);
+  const [sortedpayments, setsortedpayments] = useState([]);
+  const [text, setText] = useState('');
+  const theme = useTheme();
 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        debugger
         const response = await payment(user);
-        setPayments(response.$values)
+        setPayments(response.$values);
       } catch (error) {
-        console.error("Error fetching data: ", error);
+        console.error('Error fetching data: ', error);
       }
     };
-    
     fetchData();
   }, []);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await payment(user);
+  //       setPayments(response.$values);
+  //     } catch (error) {
+  //       console.error('Error fetching data: ', error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [text]);
+
+  //   useEffect(() => {
+  //     if(text.length){
+  //       setsortedpayments(payments.filter(item =>
+  //         item.name.toLowerCase().includes(text.toLowerCase())
+  //   ))}
+  // }, [text]);
 
   const navigation = useNavigation();
 
   const inputRef = useRef<TextInput>(null);
-
-  const dispatch = useDispatch();
-
-  const [text, setText] = useState('');
-
-
+  
   const activityHandler = () => {
-    navigation.navigate("PaymentsCreate", {steps: []});
+    navigation.navigate('PaymentsCreate', {steps: []});
   };
 
   return (
     <ScrollView style={styles.mainContainer}>
       <ImageBackground
         source={require('../../../assets/bgr_darkBlue_blue.png')}
-        resizeMode='cover'
-        style={styles.backgroundContainer}
-        >
-      <View 
-      // style={styles.autoLayerColumn}
-      >
-        <Text style={styles.socialPayments}>Соціальні виплати</Text>
-        <View style = {styles.underTitle}>
-        <Card>
-        <View >
-          <View >
-            <TextInput
-              ref={inputRef}
-              placeholder="Знайти підтримку"
-              placeholderTextColor={theme?.color}
-              onChangeText={t => setText(t)}
-            />
-          </View>
-        </View>
-      </Card>
+        resizeMode="cover"
+        style={styles.backgroundContainer}>
+        <View style={{display: 'flex', justifyContent: 'center'}}>
+          <Text style={styles.socialPayments}>Соціальні виплати</Text>
+          <View style={styles.underTitle}>
+            {user?.role == 'volunteer' ? (
+              <View style={styles.search}>
+                <View style={{marginTop: 5, marginRight: 5}}>
+                  <SearchSVG />
+                </View>
+                <TextInput
+                  style={{width: '90%', fontSize: 16, fontWeight: '800'}}
+                  ref={inputRef}
+                  placeholder="Знайти за назвою"
+                  placeholderTextColor={theme?.color}
+                  onChangeText={(t)=>setText(t)}
+                />
 
-        <View style={styles.category}>
-          <View style={styles.autoLayerRow1}>
-            <View style={styles.arrowLeft}>
-              <Text style={styles.stroke}>↓</Text>
+                <View
+                  style={{
+                    bottom: 7,
+                    left: 15,
+                    padding: 19,
+                    borderWidth: 1.2,
+                    borderRadius: 30,
+                  }}>
+                  <TouchableOpacity onPress={activityHandler}>
+                    <SvgAdd />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ) : (
+              <View style={styles.usersearch}>
+                <View style={{marginTop: 5, marginRight: 5}}>
+                  <SearchSVG />
+                </View>
+                <TextInput
+                  style={{width: '90%', fontSize: 16, fontWeight: '800'}}
+                  ref={inputRef}
+                  placeholder="Знайти за назвою"
+                  placeholderTextColor={theme?.color}
+                  onChangeText={t => setText(t)}
+                />
+                <View
+                  style={{
+                    bottom: 7,
+                    left: 15,
+                    padding: 19,
+                    borderWidth: 1.2,
+                    borderRadius: 30,
+                  }}>
+                  <TouchableOpacity onPress={activityHandler}>
+                    <SvgAdd />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+
+            <View style={styles.category}>
+              <View style={styles.autoLayerRow1}>
+                <Text style={styles.stroke}>↓</Text>
+                <Text style={styles.category2}>Категорія</Text>
+              </View>
             </View>
-            <Text style={styles.category2}>Категорія</Text>
+          </View>
+          <View style={styles.rectangle}>
+            { sortedpayments.length ? sortedpayments.map((item: any) => (
+              <Payment
+                key={item.id}
+                role={user.role}
+                text={item.name}
+                linkTo={'PaymentStruct'}
+                payment={item.amount}
+                id={item.id}
+                token={user.token}
+              />
+            )): 
+            payments.map((item: any) => (
+              <Payment
+                key={item.id}
+                role={user.role}
+                text={item.name}
+                linkTo={'PaymentStruct'}
+                payment={item.amount}
+                id={item.id}
+                token={user.token}
+              />
+            ))}
           </View>
         </View>
-{user?.role == "volunteer" ?   
-         <View style={styles.edit}>
-         <TouchableOpacity onPress={activityHandler}>
-           <View style={styles.autoLayerRow}>
-             <Text style={styles.edit2}>Додати</Text>
-             <SvgAdd/>
-           </View>
-           </TouchableOpacity>
-         </View> : <></>}
-        </View>
-        <View style={styles.rectangle}>
-          {payments.map((item: any)=>(
-  <Payment
-  key={item.id}
-  role={user.role}
-  text={item.name}
-  linkTo={'PaymentStruct'}
-  payment={item.amount}
-  id={item.id}
-  token={user.token}/>
-          ))}
-        </View>
-      </View>
       </ImageBackground>
     </ScrollView>
   );
@@ -131,16 +201,41 @@ const theme = useTheme()
 export default Payments;
 
 const styles = StyleSheet.create({
+  search: {
+    maxHeight: 40,
+    width: '74%',
+    borderWidth: 1,
+    marginLeft: '7%',
+    padding: 6,
+    paddingLeft: 15,
+    display: 'flex',
+    flexDirection: 'row',
+    zIndex: 100,
+    borderRadius: 30,
+  },
+  usersearch: {
+    maxHeight: 40,
+    width: '90%',
+    borderWidth: 1,
+    marginLeft: '7%',
+    padding: 6,
+    paddingLeft: 15,
+    display: 'flex',
+    flexDirection: 'row',
+    zIndex: 100,
+    borderRadius: 30,
+  },
   backgroundContainer: {
     // marginTop: 50,
-    paddingBottom: 20,
-    flex: 1,
-    flexGrow: 1,
+    // paddingBottom: 20,
+    // flex: 1,
+    // flexGrow: 1,
+    minHeight: 718,
   },
   mainContainer: {
-    flexGrow: 1,
+    // flexGrow: 1,
     // overflow: 'scroll',
-    // height: 700
+    height: '100%',
   },
   autoLayerRow: {
     // position: 'absolute',
@@ -149,7 +244,7 @@ const styles = StyleSheet.create({
     width: 13,
     height: 28,
     top: 5,
-    right: 14
+    right: 14,
     // zIndex: 12,
   },
   edit: {
@@ -158,11 +253,11 @@ const styles = StyleSheet.create({
     height: 30,
     // top: 116,
     left: 234,
-    bottom:5,
+    bottom: 5,
     marginLeft: 8,
     zIndex: 11,
     overflow: 'hidden',
-    backgroundColor: "#281A67",
+    backgroundColor: '#281A67',
     borderRadius: 30,
     //  marginTop : 20,
     // marginBottom: 20
@@ -171,10 +266,10 @@ const styles = StyleSheet.create({
     // position: 'absolute',
     display: 'flex',
     flexDirection: 'row',
-    width: 132,
-    height: 28,
-    top: 5,
-    right: 14
+    // width: 132,
+    // height: 28,
+    // top: 5,
+    // right: 14,
     // zIndex: 12,
   },
   edit2: {
@@ -182,8 +277,8 @@ const styles = StyleSheet.create({
     width: 82,
     height: 21,
     // top: 3,
-    left: 35,
-     
+    left: 40,
+
     color: 'rgb(255, 255, 255)',
     fontSize: 14,
     fontWeight: '600',
@@ -192,31 +287,22 @@ const styles = StyleSheet.create({
     zIndex: 14,
   },
   add: {
-    left: "100%",
-    paddingBottom:3,
+    left: '100%',
+    paddingBottom: 3,
     background: 'rgb(39, 26, 103)',
     // zIndex: 1,
     borderRadius: 20,
   },
-  underTitle: {
-
-
-
-
-
-  },
+  underTitle: {},
   socialPayments: {
-    // position: 'absolute',
     width: '100%',
     height: 100,
     top: 50,
-    left: '24%',
-     
     color: 'rgb(0, 0, 0)',
     fontSize: 26,
     fontWeight: '600',
     lineHeight: 39,
-    textAlign: 'left',
+    textAlign: 'center',
     zIndex: 10,
   },
   category: {
@@ -235,11 +321,10 @@ const styles = StyleSheet.create({
     // height: 10,
   },
   stroke: {
-    // position: 'absolute',
-    // width: 100,
-    // height: 100,
+    // position: 'absolute',,
     // // top: '-11.9%',
-    // // left: '-6.08%',
+    left: 10,
+    bottom: 2,
     // zIndex: 13,
     fontSize: 20,
     fontWeight: 'bold',
@@ -250,26 +335,23 @@ const styles = StyleSheet.create({
     // height: 26,
     paddingLeft: 20,
     color: 'rgb(0, 0, 0)',
-    fontSize: 19,
+    fontSize: 16,
     fontWeight: '300',
     lineHeight: 25.5,
     textAlign: 'left',
   },
-  addpayment:{
-  },
+  addpayment: {},
   rectangle: {
     // position: 'absolute',
-    paddingTop:5,
-    paddingBottom:300,
+    // paddingTop: 5,
+    paddingBottom: 100,
     display: 'flex',
     flexDirection: 'column',
     width: '92%',
     // height: '90%',
     // top: -100,
     left: 18,
-    backgroundColor: '#F1F3F5',
-    borderRadius: 4,
-    marginTop: 10,
+    // borderRadius: 4,
     // backgroundColor: 'rgb(247, 249, 250)',
     // zIndex: 14,
     // borderRadius: '5px 5px 0 0',
@@ -288,7 +370,7 @@ const styles = StyleSheet.create({
     height: 88,
     top: 0,
     left: 11,
-     
+
     color: 'rgb(0, 0, 0)',
     fontSize: 15,
     fontWeight: '500',
@@ -320,7 +402,7 @@ const styles = StyleSheet.create({
     height: 88,
     top: 10,
     left: 0,
-     
+
     color: 'rgb(0, 0, 0)',
     fontSize: 15,
     fontWeight: '500',
@@ -344,7 +426,7 @@ const styles = StyleSheet.create({
     height: 49,
     top: 30,
     left: 284,
-     
+
     color: 'rgb(0, 0, 0)',
     fontSize: 15,
     fontWeight: '600',
@@ -389,7 +471,7 @@ const styles = StyleSheet.create({
     height: 88,
     top: 0,
     left: 0,
-     
+
     color: 'rgb(0, 0, 0)',
     fontSize: 15,
     fontWeight: '500',
@@ -413,7 +495,7 @@ const styles = StyleSheet.create({
     height: 49,
     top: 30,
     left: 284,
-     
+
     color: 'rgb(0, 0, 0)',
     fontSize: 15,
     fontWeight: '600',
