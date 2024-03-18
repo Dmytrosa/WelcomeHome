@@ -1,46 +1,49 @@
-import React, {useState, useRef} from 'react';
-import {StyleSheet, FlatList, View, TextInput, Image, Text} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Text,
+  ScrollView,
+  ImageBackground,
+} from 'react-native';
 
-import {useSelector, useDispatch} from 'react-redux';
-// import {taskAdded, taskToggled} from '../../store/paymentsSlice';
-import {RootState} from '../../store/store';
-// import {Task} from '../store/tasksSlice';
-// import {Task} from '../../store/paymentsSlice';
 import Center from './List/center';
 import {useTheme} from '../../theme/useTheme';
-import Layout from '../../components/Layout';
-import Card from '../../components/Card';
-import ListItem from '../../components/ListItem';
+import {SearchSVG} from '../../../assets/public/svg/search';
+import { establishmentId } from '../../services/services/establishment';
 
-const Centers = () => {
+const Centers = (props:any) => {
+  const {id, token} = props.route.params;
+
   const {theme} = useTheme();
+
+  const [text, setText] = useState('');
+  const [centers, setCenters] = useState([]);
 
   const inputRef = useRef<TextInput>(null);
 
-  // const loadingStatus = useSelector((state) => state.todos.status);
-  const dispatch = useDispatch();
 
-  const [text, setText] = useState('');
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const user = {token: token};
+        const params = {id : id};
 
-  // const addNewTask = () => {
-  //   let temp = text.trim();
-  //   if (temp !== '') {
-  //     dispatch(taskAdded({id: Date.now(), title: temp, done: false}));
-  //   }
-  //   inputRef.current?.clear();
-  // };
+        const response = await establishmentId(user, params);
 
-  // const onCheckedHandler = (id: string) => {
-  //   dispatch(taskToggled(id));
-  // };
+        debugger
+        setCenters(response);
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
 
-  // const renderItem = ({item, index}: {item: Task; index: number}) => (
-  //   <ListItem item={item} index={index} onPress={onCheckedHandler} />
-  // );
+    fetchData();
+  }, []);
 
-  // const keyExtractor = (item: Task) => `task-${item.id}`;
 
-  const centers = [
+  const mockcenters = [
     {
       id: 0,
       text: 'Центр реабілітації Recovery',
@@ -56,88 +59,114 @@ const Centers = () => {
   ];
 
   return (
-    <Layout>
-      <Card
-        style={[styles.inputCard,
-        //  {borderTopColor: theme?.cardBorderColor}
-         ]}>
-        {/* TextInput and InputButton starts here */}
-        <View style={styles.inputBtnRow}>
-          <View style={styles.inputBtnWrp}>
+    <ScrollView style={styles.mainContainer}>
+      <ImageBackground
+        source={require('../../../assets/bgr_darkBlue_blue.png')}
+        resizeMode="cover"
+        style={styles.backgroundContainer}>
+        <Text style={styles.socialPayments}>Реабілітаційні центри</Text>
+        <View>
+          <View style={styles.search}>
+            <View style={{marginTop: 5, marginRight: 5}}>
+              <SearchSVG />
+            </View>
             <TextInput
+              style={{
+                width: '90%',
+                fontSize: 16,
+                fontWeight: '700',
+                color: 'gray',
+              }}
               ref={inputRef}
-              placeholder="Знайти реабілітаційний цетр"
+              placeholder="Знайти за назвою"
               placeholderTextColor={theme?.color}
-              style={[
-                styles.input,
-                {
-                  color: theme?.color,
-                  backgroundColor: theme?.layoutBg,
-                  borderColor: theme?.layoutBg,
-                },
-              ]}
               onChangeText={t => setText(t)}
-              onSubmitEditing={() => {}}
             />
           </View>
-        </View>
-        {/* TextInput and InputButton ends here */}
-      </Card>
-      <View
-        style={[
-          {
-            display: 'flex',
-            flexDirection: 'row',
-            marginBottom: 25,
-            marginTop: 20,
-            marginLeft: 17,
-            backgroundColor: theme?.layoutBg,
-          },
-        ]}>
-        <Text
-          style={[
-            {
-              fontSize: 20,
-            },
-          ]}>
-          Оберіть місто
-        </Text>
-        <Text
-          style={[
-            {
-              left: 180,
-              fontSize: 20,
-            },
-          ]}>
-          Фільтри
-        </Text>
-      </View>
 
-      {centers.map(el => {
-        return (
-          <Center
-            key={el.id}
-            text={el.text}
-            citys={el.citys}
-            photoLink={el.photoLink}
-          />
-        );
-      })}
-      {/* Tasks Listing starts here */}
-      {/* <FlatList
-        data={todoList}
-        renderItem={renderItem} 
-        keyExtractor={keyExtractor}
-        contentContainerStyle={styles.flatList}
-      /> */}
-      {/* Tasks Listing ends here */}
-    </Layout>
+          <View style={styles.category}>
+            <View style={styles.autoLayerRow1}>
+              <Text style={styles.stroke}>↨</Text>
+              <Text style={styles.category2}>Фільтрувати</Text>
+            </View>
+          </View>
+        </View>
+
+        {centers.map((el:any) => {
+          return (
+            <Center
+              key={el.id}
+              text={el.name}
+              citys={el.address}
+              photoLink={el.photoLink}
+            />
+          );
+        })}
+      </ImageBackground>
+    </ScrollView>
   );
 };
 
 export default Centers;
 
 const styles = StyleSheet.create({
+  search: {
+    maxHeight: 40,
+    width: '85%',
+    borderWidth: 1,
+    marginLeft: '7%',
+    padding: 6,
+    paddingLeft: 15,
+    display: 'flex',
+    flexDirection: 'row',
+    zIndex: 100,
+    borderRadius: 30,
+  },
+  category: {
+    // position: 'absolute',
+    width: '100%',
+    height: 45,
+    top: 13,
+    left: 12,
+    zIndex: 11,
+    overflow: 'hidden',
+  },
+  socialPayments: {
+    width: '100%',
+    height: 100,
+    top: 50,
+    color: 'rgb(0, 0, 0)',
+    fontSize: 26,
+    fontWeight: '600',
+    lineHeight: 39,
+    textAlign: 'center',
+    zIndex: 10,
+  },
+  category2: {
+    flexShrink: 0,
+    paddingLeft: 20,
+    color: 'rgb(0, 0, 0)',
+    fontSize: 16,
+    fontWeight: '300',
+    lineHeight: 25.5,
+    textAlign: 'left',
+  },
+  stroke: {
+    left: 10,
+    bottom: 2,
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  autoLayerRow1: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  mainContainer: {
+    height: '100%',
+  },
+  backgroundContainer: {
+    minHeight: 718,
+  },
   activityIndicatorContainer: {
     backgroundColor: '#fff',
     alignItems: 'center',

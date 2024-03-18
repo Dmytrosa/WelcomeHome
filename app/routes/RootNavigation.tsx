@@ -89,6 +89,7 @@ function WorkStack() {
       <Stack.Screen
         name="Work"
         component={Work}
+        initialParams={user}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
@@ -248,15 +249,7 @@ export default function RootNavigation() {
             headerStyle: {backgroundColor: theme.cardBg, height: 50},
             headerTitleStyle: {color: theme.color, fontSize: 16},
           }}>
-            <Tab.Screen
-              name="AuthTEST"
-              component={AuthTEST}
-              options={{
-                tabBarStyle: {display: 'none'},
-                headerShown: false,
-                tabBarLabel: '',
-              }}
-            />
+           
           <Tab.Screen
             name="Payments"
             component={PaymentsStack}
@@ -266,6 +259,15 @@ export default function RootNavigation() {
               tabBarLabel: '',
             }}
           />
+           <Tab.Screen
+              name="AuthTEST"
+              component={AuthTEST}
+              options={{
+                tabBarStyle: {display: 'none'},
+                headerShown: false,
+                tabBarLabel: '',
+              }}
+            />
           <Tab.Screen
             name="Help"
             component={HelpStack}

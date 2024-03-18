@@ -1,16 +1,5 @@
-import React, {useState, useRef} from 'react';
-import {StyleSheet, FlatList, View, TextInput, Image, Text} from 'react-native';
-
-import {useSelector, useDispatch} from 'react-redux';
-// import {taskAdded, taskToggled} from '../../store/tasksSlice';
-// import {RootState} from '../../store/store';
-// import {Task} from '../store/tasksSlice';
-// import {Task} from '../../store/tasksSlice';
-
-import {useTheme} from '../../../theme/useTheme';
-import Layout from '../../../components/Layout';
-// import Card from '../../components/Card';
-// import ListItem from '../../components/ListItem';
+import React from 'react';
+import {StyleSheet, View, Image, Text} from 'react-native';
 
 type center = {
   text: string;
@@ -19,48 +8,12 @@ type center = {
 };
 
 const Center = (props: center) => {
-  const {theme} = useTheme();
-
-  const inputRef = useRef<TextInput>(null);
-
-  // const loadingStatus = useSelector((state) => state.todos.status);
-  const dispatch = useDispatch();
-
-  const [text, setText] = useState('');
-
-  //   const addNewTask = () => {
-  //     let temp = text.trim();
-  //     if (temp !== '') {
-  //       dispatch(taskAdded({id: Date.now(), title: temp, done: false}));
-  //     }
-  //     inputRef.current?.clear();
-  //   };
-
-  //   const onCheckedHandler = (id: string) => {
-  //     dispatch(taskToggled(id));
-  //   };
-
-  //   const renderItem = ({item, index}: {item: Task; index: number}) => (
-  //     <ListItem item={item} index={index} onPress={onCheckedHandler} />
-  //   );
-
-  //   const keyExtractor = (item: Task) => `task-${item.id}`;
-  {
-    /* <View style={styles.imageContainer}>
-
-      </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.text}>{props.text}</Text>
-        <Text>{props.citys}</Text>
-      </View> */
-  }
   return (
     <View style={styles.card}>
       <Image
         source={{uri: 'https://via.placeholder.com/150'}}
         style={styles.image}
       />
-      {/* <View style={styles.med_pagespeed} /> */}
       <View style={styles.information}>
         <View style={styles.name_favorite}>
           <Text style={styles.mednean_center}>{props.text}</Text>
@@ -79,7 +32,7 @@ const styles = StyleSheet.create({
     flexBasis: 'auto',
     width: 169,
     height: 18,
-     
+
     color: 'rgb(135, 135, 135)',
     fontSize: 12,
     fontWeight: '500',
@@ -91,7 +44,7 @@ const styles = StyleSheet.create({
     flexBasis: 'auto',
     width: 237,
     height: 24,
-     
+
     color: 'rgb(15, 15, 15)',
     fontSize: 16,
     fontWeight: '600',
@@ -102,10 +55,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row', // В React Native за замовчуванням flexDirection: 'column', тому вам слід вказати 'row' для горизонтального вирівнювання
+    flexDirection: 'row',
     flexWrap: 'nowrap',
     flexShrink: 0,
-    // marginHorizontal: 38, // Замість gap використовуйте marginHorizontal для відступів між елементами
     paddingBottom: 8,
     borderBottomWidth: 1,
     borderBottomColor: 'rgb(196, 194, 194)',
@@ -121,6 +73,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     minWidth: 0,
     marginLeft: 15,
+    marginTop: -5,
   },
   med_pagespeed: {
     flexShrink: 0,
@@ -130,25 +83,15 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 5,
     borderBlockStart: 5,
     borderBottomRightRadius: 5,
-    // background: no-repeat center,
-    // background-size: cover,
-    // border-radius: 5px,
   },
   card: {
-    elevation: 2,
-    shadowColor: 'gray',
-    borderBottomStartRadius: 7,
+    backgroundColor: "white",
     width: '95%',
     flexDirection: 'row',
-    paddingHorizontal: 10,
-    paddingVertical: 10,
     marginLeft: 10,
     marginRight: 10,
-    alignItems: 'center',
     marginBottom: 13,
-    borderRadius: 10,
-
-    // backgroundColor: "#000000",
+    borderRadius: 25,
   },
   imageContainer: {
     flex: 1,
@@ -157,6 +100,8 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     resizeMode: 'cover',
+    borderTopLeftRadius:25,
+    borderBottomLeftRadius:25,
   },
   textContainer: {
     flex: 2,

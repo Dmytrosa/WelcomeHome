@@ -1,4 +1,4 @@
-import { useTheme } from '../../theme/useTheme';
+import {useTheme} from '../../theme/useTheme';
 import {paymentId} from '../../services/services/payment';
 import React, {useEffect, useState} from 'react';
 import {
@@ -11,17 +11,13 @@ import {
 } from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 
-type payStruct = {
-  title: string;
-};
-
 const TruncateText = ({initialText = '.', maxChars = 1}) => {
   const [expanded, setExpanded] = useState(false);
   const truncatedText = initialText.slice(0, maxChars);
 
   return (
     <TouchableWithoutFeedback onPress={() => setExpanded(!expanded)}>
-      <View>
+      <View style={{paddingLeft: 10, paddingRight: 10}}>
         <Text>
           {expanded ? initialText : truncatedText}
           {initialText.length > maxChars && !expanded && '...'}
@@ -31,7 +27,7 @@ const TruncateText = ({initialText = '.', maxChars = 1}) => {
   );
 };
 
-const SvgEdit = () => {
+export const SvgEdit = () => {
   return (
     <View
       style={[
@@ -68,34 +64,36 @@ const SvgEdit = () => {
   );
 };
 
-const PaymentStruct = ({route}) => {
+const PaymentStruct = ({route}: {route: any}) => {
   const {id, token} = route.params;
-  const [payment, setPayment] = useState({});
-  const theme = useTheme();
+  const [payment, setPayment] = useState<any>(null); 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        debugger
         const user = {token: token};
         const params = {payoutId: id};
-        debugger
+
         const response = await paymentId(user, params);
-        debugger
         setPayment(response);
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
     };
+
     fetchData();
-    
   }, []);
+
+  if (!payment) {
+    return <></>; 
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <ImageBackground
         source={require('../../../assets/bgr_darkBlue_blue.png')}
-        resizeMode="cover">
+        resizeMode="cover"
+        style={styles.backgroundContainer}>
         <View>
           <Text style={styles.oneTimeFinancialAssistance}>{payment.name}</Text>
           <View style={styles.edit}>
@@ -105,78 +103,88 @@ const PaymentStruct = ({route}) => {
             </View>
           </View>
           <View style={styles.description}>
-            <Text style={styles.description5}>Опис</Text>
+            <Text style={styles.description5}>Опис:</Text>
             <TruncateText initialText={payment.description} maxChars={200} />
+            <Text style={styles.openclose}>натисніть на текст</Text>
           </View>
-          <View style={styles.amount}>
-            <View style={styles.autoLayerRow6}>
-              <Text style={styles.amount7}>Сума</Text>
+          <View style={styles.info}>
+            <View style={styles.amount}>
               <Text style={styles.amountCurrency}> {payment.amount} ₴ </Text>
             </View>
-          </View>
-          <View style={styles.howToGet}>
-            <View style={styles.autoLayerRow9}>
-              <Text style={styles.howToGetInCity}>Як отримати у місті</Text>
+            <View style={styles.howToGet}>
               <Text style={styles.category}>Київ ↓</Text>
-              <View style={styles.arrowLeft}>
-                <View style={styles.stroke} />
-              </View>
             </View>
           </View>
-          <View style={styles.steps}>
-
-          </View>
+         
+          {console.log(
+            'payment.steps.$values',
+            JSON.stringify(payment.steps.$values),
+          )}
+          {payment.steps.$values.map((step:any, index:any) => (
+            <View style={styles.step} key={index}>
+              <Text style={styles.step1}>
+                Крок {index + 1}
+              </Text>
+              <View style={styles.editStep}>
+                <View style={styles.autoLayerRow1}>
+                  <Text style={styles.edit2}>Редагувати</Text>
+                  <SvgEdit />
+                  <View style={styles.home}>
+                    <View style={styles.edit3} />
+                  </View>
+                </View>
+              </View>
+              <View>
+                <Text style={styles.getDocumentsD}>{step.description}</Text>
+              <View style={styles.getDocumentsList}>
+                <Text style={styles.getDocumentsL}>Принести документи:</Text>
+                {step.documentsBring &&
+                  step.documentsBring.$values.map((doc: any, index: number) => (
+                    <View key={index}>
+                      <Text style={styles.getDocumentsE}>- {doc.name}</Text>
+                    </View>
+                  ))}
+              </View>
+              </View>
+            </View>
+          ))}
         </View>
       </ImageBackground>
-       {/* {payment.steps && payment.steps.$values.map((step) => {
-                <View style={styles.step}>
-                  <View style={styles.autoLayerRowB}>
-                    <Text style={styles.step1}>
-                      Крок {step.sequenceNumber + 1}.
-                    </Text>
-                    <View style={styles.editStep}>
-                      <View style={styles.autoLayerRow1}>
-                        <Text style={styles.edit2}>Редагувати</Text>
-                        <SvgEdit />
-                        <View style={styles.home}>
-                          <View style={styles.edit3} />
-                        </View>
-                      </View>
-                    </View>
-                    <View style={styles.getDocuments}>
-                      <Text style={styles.getDocumentsD}>
-                        {step.description}
-                      </Text>
-                    </View>
-                  </View>
-                </View>;
-              })} */}
-               {/* <View style={styles.getDocuments}>
-                      <Text style={styles.getDocumentsD}>
-                        Отримати документи:
-                      </Text>
-                      {payment && payment.steps.documentsBring.$values.map(doc => {
-                        <View>
-                        <Text style={styles.getDocumentsE}>
-                          {doc.name}
-                        </Text>;
-                         <View style={styles.whereInfo}>
-                         <View style={styles.where}>
-                           <Text style={styles.where10}>Де ?</Text>
-                           <Text style={styles.link}>Посилання</Text>
-                         </View>
-                       </View>
-                       </View>
-                      })}
-                    </View> */}
     </ScrollView>
-               
   );
 };
 
 export default PaymentStruct;
 
 const styles = StyleSheet.create({
+  getDocumentsL:{
+    marginTop:5,
+    textDecorationLine: 'underline',
+    fontSize: 17
+  },
+  getDocumentsList:{
+
+  },
+  openclose: {
+    position: 'absolute',
+    bottom: 10,
+    right: 15,
+    fontSize: 16,
+    color: '#c2c0c0',
+  },
+  info: {
+    top: 5,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  backgroundContainer: {
+    // marginTop: 50,
+    // paddingBottom: 20,
+    // flex: 1,
+    // flexGrow: 1,
+    minHeight: 718,
+  },
   container: {
     flexGrow: 1,
     backgroundColor: 'white',
@@ -184,24 +192,33 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
   },
   step: {
+    padding: 20,
     display: 'flex',
+    marginLeft: '5%',
     // height: 200,
     marginBottom: 20,
+    width:"90%",
+    flexGrow: 1,
+    
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 30,
   },
   whereInfo: {
     bottom: 10,
   },
   oneTimeFinancialAssistance: {
     // position: 'absolute',
-    width: '70%',
-    height: 60,
+    width: '96%',
+    // height: 60,
     marginTop: '10%',
-    marginLeft: '13%',
+    // marginLeft: '3%',
     // top: 63,
     // left: 42,
 
     color: 'rgb(0, 0, 0)',
-    fontSize: 19,
+    fontSize: 20,
     fontWeight: '700',
     lineHeight: 27,
     textAlign: 'center',
@@ -212,9 +229,9 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: 140,
     height: 30,
-    // top: 116,
+    top: 16,
     // left: 8,
-    marginLeft: 8,
+    marginLeft: 29,
     zIndex: 11,
     overflow: 'hidden',
     backgroundColor: '#281A67',
@@ -226,7 +243,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 140,
     height: 26,
-    top: 10,
+    top: 17,
     left: '50%',
     marginLeft: 8,
     zIndex: 11,
@@ -242,7 +259,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: 132,
     height: 28,
-    top: 5,
+    top: 3,
     right: 14,
     // zIndex: 12,
   },
@@ -251,7 +268,7 @@ const styles = StyleSheet.create({
     paddingBottom: 3,
     background: 'rgb(39, 26, 103)',
     // zIndex: 1,
-    borderRadius: 20,
+    borderRadius: 30,
   },
   edit2: {
     // position: 'absolute',
@@ -287,11 +304,11 @@ const styles = StyleSheet.create({
   description: {
     backgroundColor: '#F7F9FB',
     paddingLeft: 10,
-    paddingBottom: 10,
-    paddingTop: 5,
-    borderRadius: 5,
+    paddingBottom: 35,
+    paddingTop: 10,
+    borderRadius: 30,
     width: 367,
-    marginTop: 30,
+    marginTop: 35,
     marginBottom: 20,
     left: 14,
     zIndex: 17,
@@ -345,10 +362,10 @@ const styles = StyleSheet.create({
   },
   amount: {
     // position: 'absolute',
-    width: 356,
+    // width: 356,
     height: 45,
     // top: 370,
-    left: 15,
+    // left: 17,
     zIndex: 22,
     overflow: 'hidden',
   },
@@ -382,20 +399,21 @@ const styles = StyleSheet.create({
     left: 50,
     background: 'rgb(247, 249, 250)',
     zIndex: 25,
-    borderRadius: 5,
+    borderRadius: 30,
   },
   amountCurrency: {
-    borderRadius: 5,
+    paddingTop: 2,
+    borderRadius: 30,
     backgroundColor: '#F7F9FB',
     // padding: ,
-
-    position: 'absolute',
-    width: 264,
-    height: 25,
+    paddingLeft: 30,
+    paddingRight: 30, // position: 'absolute',
+    // width: "50%",
+    height: 30,
 
     // top: 7,
-    marginTop: 7,
-    left: 60,
+    // marginTop: 7,
+    // left: 60,
 
     color: 'rgb(0, 0, 0)',
     fontSize: 15,
@@ -406,17 +424,17 @@ const styles = StyleSheet.create({
   },
   howToGet: {
     // position: 'absolute',
-    width: 369,
+    // width: 369,
     height: 48,
-    marginTop: 30,
+    // marginTop: 30,
     // top: 430,
-    left: 12,
-    zIndex: 27,
+    // left: 12,
+    // zIndex: 27,
     overflow: 'hidden',
   },
   autoLayerRow9: {
     // position: 'absolute',
-    width: 344,
+    maxWidth: 250,
     height: 34,
     // top: 4,
     left: 9,
@@ -445,25 +463,25 @@ const styles = StyleSheet.create({
     left: 163,
     background: 'rgb(247, 249, 250)',
     zIndex: 30,
-    borderRadius: 5,
+    borderRadius: 30,
   },
   category: {
-    borderRadius: 5,
+    borderRadius: 30,
     backgroundColor: '#F7F9FB',
     padding: 2,
-    paddingLeft: 15,
-
-    position: 'absolute',
-    width: '50%',
+    paddingLeft: 20,
+    paddingRight: 40,
+    // position: 'absolute',
+    // maxWidth:"35%",
     height: 30,
-    top: 5,
-    left: 176,
+    // top: 5,
+    // left: 176,
 
     color: 'rgb(0, 0, 0)',
     fontSize: 15,
     fontWeight: '500',
     lineHeight: 22.5,
-    textAlign: 'left',
+    // textAlign: 'left',
     zIndex: 31,
   },
   arrowLeft: {
@@ -485,12 +503,12 @@ const styles = StyleSheet.create({
   steps: {
     // position: 'absolute',
     // top: 400,
-    left: 13,
-    zIndex: 34,
-    overflow: 'hidden',
+    // left: 13,
+    // zIndex: 34,
+    // overflow: 'hidden',
   },
   autoLayerRowB: {
-    borderRadius: 5,
+    borderRadius: 30,
     backgroundColor: '#F7F9FB',
     padding: 2,
     paddingLeft: 15,
@@ -510,28 +528,31 @@ const styles = StyleSheet.create({
     left: 0,
     background: 'rgb(247, 249, 250)',
     zIndex: 36,
-    borderRadius: 5,
+    borderRadius: 30,
   },
   step1: {
     // position: 'absolute',
-    width: 90,
-    height: 21,
-    top: 4,
-    left: 20,
+    // width: 90,
+    height: 31,
+    // top: 4,
+    // marginTop: 15,
+    marginBottom:10,
+    right: "35%",
 
-    color: 'rgb(0, 0, 0)',
-    fontSize: 17,
+    // color: 'rgb(0, 0, 0)',
+    fontSize: 19,
     fontWeight: '600',
-    lineHeight: 21,
+    // lineHeight: 21,
     // textAlign: 'center',
-    zIndex: 37,
+    // zIndex: 37,
     wordBreak: 'break-word',
   },
   getDocuments: {
     // position: 'absolute',
-    width: 300,
+    // width: 300,
     // height: 90,
-    top: 15,
+    // top: 15,
+    marginTop: 15,
     left: 9,
 
     // marginBottom: 5,
@@ -543,23 +564,21 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   getDocumentsD: {
-    textDecorationLine: 'underline',
-
+    // textDecorationLine: 'underline',
     color: 'rgb(0, 0, 0)',
-    fontSize: 15,
+    fontSize: 20,
     fontWeight: '500',
-    lineHeight: 15,
-    textAlign: 'left',
-    textDecoration: 'underline',
+    lineHeight: 20,
     wordBreak: 'break-word',
   },
   getDocumentsE: {
     color: 'rgb(0, 0, 0)',
-    fontSize: 14,
-    fontWeight: '300',
-    lineHeight: 15,
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 17,
     textAlign: 'left',
     wordBreak: 'break-word',
+    marginTop:10,
   },
   rectangleF: {
     // position: 'absolute',
@@ -569,7 +588,7 @@ const styles = StyleSheet.create({
     left: 9,
     background: 'rgb(255, 255, 255)',
     zIndex: 39,
-    borderRadius: 5,
+    borderRadius: 30,
   },
   where: {
     // position: 'absolute',

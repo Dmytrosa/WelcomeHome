@@ -1,7 +1,7 @@
 import { executeRequest, routes } from "..";
 
-export const establishmentId = async (body: any) => {
-    const response =  await executeRequest( 'GET' , `${routes.establishmentId}`, {body});
+export const establishmentId = async (user: any, params: any) => {
+    const response =  await executeRequest( 'GET' , `${routes.establishmentId}`, {user, params});
     if (response.status == 200 )return response.data
   };
 

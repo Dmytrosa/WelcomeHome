@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, ScrollView, View, Text, Switch, Image} from 'react-native';
+import {StyleSheet, ScrollView, View, Text, Switch, Image, ImageBackground} from 'react-native';
 
 import {useDispatch} from 'react-redux';
 import {clearUser} from '../store/userSlice';
@@ -25,9 +25,12 @@ const Settings = () => {
   };
 
   return (
-    <Layout>
-      <ScrollView
-        style={[styles.contentContainer, {backgroundColor: theme.layoutBg}]}>
+  <ScrollView style={styles.mainContainer}>
+    <ImageBackground
+      source={require('../../../assets/bgr_darkBlue_blue.png')}
+      resizeMode="cover"
+      style={styles.backgroundContainer}>
+
         <Card style={{backgroundColor: theme.cardBg}}>
           <View style={styles.avatarRow}>
             <Image source={avatar} style={styles.avatar} />
@@ -64,25 +67,19 @@ const Settings = () => {
             <MenuItem label="Logout" onPress={handleLogout} />
           </>
         </Card>
-      </ScrollView>
-    </Layout>
+      </ImageBackground>
+    </ScrollView>
   );
 };
 
 export default Settings;
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    flexGrow: 1,
-    paddingVertical: 16,
-    paddingHorizontal: 12,
+  mainContainer: {
+    height: '100%',
   },
-  header: {
-    paddingLeft: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: 40,
+  backgroundContainer: {
+    minHeight: 718,
   },
   btnHamburger: {
     paddingHorizontal: 20,

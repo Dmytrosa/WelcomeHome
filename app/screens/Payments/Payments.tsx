@@ -62,9 +62,11 @@ const Payments = (props: any) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        debugger
+        
         const response = await payment(user);
         setPayments(response.$values);
+        // console.log(JSON.stringify(response))
+
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
@@ -105,6 +107,7 @@ const Payments = (props: any) => {
         source={require('../../../assets/bgr_darkBlue_blue.png')}
         resizeMode="cover"
         style={styles.backgroundContainer}>
+          {console.log("payments",JSON.stringify(payments))}
         <View style={{display: 'flex', justifyContent: 'center'}}>
           <Text style={styles.socialPayments}>Соціальні виплати</Text>
           <View style={styles.underTitle}>
@@ -140,24 +143,12 @@ const Payments = (props: any) => {
                   <SearchSVG />
                 </View>
                 <TextInput
-                  style={{width: '90%', fontSize: 16, fontWeight: '800'}}
+                  style={{width: '70%', fontSize: 16, fontWeight: '800'}}
                   ref={inputRef}
                   placeholder="Знайти за назвою"
                   placeholderTextColor={theme?.color}
                   onChangeText={t => setText(t)}
                 />
-                <View
-                  style={{
-                    bottom: 7,
-                    left: 15,
-                    padding: 19,
-                    borderWidth: 1.2,
-                    borderRadius: 30,
-                  }}>
-                  <TouchableOpacity onPress={activityHandler}>
-                    <SvgAdd />
-                  </TouchableOpacity>
-                </View>
               </View>
             )}
 
@@ -200,7 +191,7 @@ const Payments = (props: any) => {
 
 export default Payments;
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   search: {
     maxHeight: 40,
     width: '74%',
@@ -215,7 +206,7 @@ const styles = StyleSheet.create({
   },
   usersearch: {
     maxHeight: 40,
-    width: '90%',
+    width: '88%',
     borderWidth: 1,
     marginLeft: '7%',
     padding: 6,
